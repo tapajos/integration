@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" href="stylesheets/screen.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="stylesheets/SyntaxHighlighter.css" type="text/css" media="screen" />
+	<script src="javascripts/shCore.js" type="text/javascript"></script>
+	<script src="javascripts/shBrushRuby.js" type="text/javascript"></script>
+	
+	<title>Integration</title>
+</head>
+
+<body>
+<div id="whole_page_container">
+	<h1 id="what">What</h1>
+
+	<p>&#8220;The term <strong><a href="http://en.wikipedia.org/wiki/Continuous_integration">Continuous integration</a></strong> emerged in the <a href="http://en.wikipedia.org/wiki/Extreme_Programming" title="Extreme Programming">Extreme Programming</a> community. It describes a set of <a href="http://en.wikipedia.org/wiki/Software_Engineering" title="Software Engineering">Software Engineering</a> practices that speed up the delivery of software by decreasing integration times. <a href="http://en.wikipedia.org/wiki/Extreme_programming" title="Extreme programming">Extreme programming</a> advocates <a href="http://en.wikipedia.org/wiki/Martin_Fowler" title="Martin Fowler">Martin Fowler</a> and <a href="http://en.wikipedia.org/wiki/Kent_Beck" title="Kent Beck">Kent Beck</a> first wrote about <strong>Continuous integration</strong> near the turn of the millennium: making it part of the <a href="http://en.wikipedia.org/wiki/Extreme_Programming" title="Extreme Programming">Extreme Programming</a> discipline. Fowler&#8217;s paper is a popular source of information on the subject. Beck&#8217;s book <a href="http://en.wikipedia.org/wiki/White_Book" title="White Book">White Book</a>, the original reference for <a href="http://en.wikipedia.org/wiki/Extreme_Programming" title="Extreme Programming">Extreme Programming</a>, also describes the term.&#8221;(<a href="http://en.wikipedia.org/wiki/Continuous_integration">wikipedia</a>)</p>
+
+	<p>The <a href="http://rubyforge.org/projects/integration/">plugin Integration</a> for <a href="http://www.rubyonrails.org/">Ruby on Rails</a> provides a set of tasks to automatize all steps of the integration process.</p>
+
+	<h1 id="minimum_requirements">Minimum Requirements</h1>
+
+	<ul>
+	<li>Linux or Mac OS X</li>
+	<li><a href="http://subversion.tigris.org/">Subversion</a></li>
+	<li>Gem <a href="http://code.whytheluckystiff.net/hpricot/">Hpricot</a></li>
+	<li>Gem <a href="http://eigenclass.org/hiki.rb?rcov">Rcov</a></li>
+	<li><a href="http://selenium-on-rails.openqa.org/">Selenium on Rails</a></li>
+	<li><a href="http://rspec.info/">Rspec</a></li>
+	</ul>
+
+	<h1 id="installing">Installing</h1>
+
+	<pre name="code" class="ruby">ruby script/plugin install -x svn://rubyforge.org/var/svn/integration
+	</pre>
+
+	<p>After that the plugin is ready to be used and you will need to execute only one task.</p>
+
+	<pre name="code" class="ruby">rake integrate
+	</pre>
+
+	<h1 id="how_it_works">How it works</h1>
+
+	<p>The integrate task executes many other tasks. It also contains a description which can be seen with &#8216;rake -T&#8217; command.</p>
+
+	<p>But it is very important that you know the sequence in which the tasks are called and how to skip or add tasks.
+	To customize the integration process you need to create a task file, like integration.rake, in the project rake directory.</p>
+
+	<ol>
+	<li>svn:status:check</li>
+	<li>log:clear</li>
+	<li>tmp:clear</li>
+	<li>backup:local</li>
+	<li>svn:update</li>
+	<li>db:migrate</li>
+	<li>test:units</li>
+	<li>test:functionals</li>
+	<li>test:integration</li>
+	<li>spec:lib</li>
+	<li>spec:models</li>
+	<li>spec:helpers</li>
+	<li>spec:controllers</li>
+	<li>spec:views</li>
+	<li>test:rcov:units</li>
+	<li>test:rcov:units:verify</li>
+	<li>test:rcov:functionals</li>
+	<li>test:rcov:functionals:verify</li>
+	<li>spec:rcov</li>
+	<li>spec:rcov:verify</li>
+	<li>test:plugins:selected</li>
+	<li>spec:plugins:selected</li>
+	<li>test:selenium:server:start</li>
+	<li>test_acceptance</li>
+	<li>test:selenium:server:stop</li>
+	<li>svn:commit</li>
+	</ol>
+
+	<h3 id="skipping_tasks">Skipping tasks.</h3>
+
+	<p>In your custom integration rake file you need to define the list of tasks that you want to skip thus:</p>
+
+	<pre name="code" class="ruby">ENV['SKIP_TASKS'] = %w( spec:lib
+	                        spec:models
+	                        spec:helpers
+	                        spec:controllers
+	                        spec:views
+	                        test:rcov:units
+	                        test:rcov:units:verify
+	                        test:rcov:functionals
+	                        test:rcov:functionals:verify
+	                        spec:rcov
+	                        spec:rcov:verify
+	                        test:selenium:server:start
+	                        test_acceptance
+	                        test:selenium:server:stop
+	                        ).join(",")
+	</pre>
+
+	<h3 id="adding_another_task_to_the_process">Adding another task to the process.</h3>
+
+	<p>In your custom integration rake file you need to define the new task and define the position in which to insert in process. See the example below.</p>
+
+	<pre name="code" class="ruby">namespace :test_acceptance do
+	  desc 'Runs cache sweeper and generate static 500 error page'
+	  task :before do
+	    Rake::Task["cache:sweeper:start"].invoke 
+	    Rake::Task["error500"].invoke 
+	  end
+
+	  desc 'Runs cache sweeper'
+	  task :after do
+	    Rake::Task["cache:sweeper:stop"].invoke 
+	  end
+	end
+	</pre>
+
+	<h3 id="defining_the_list_of_plugins_in_which_you_want_to_run_tests_or_specs">Defining the list of plugins in which you want to run tests or specs.</h3>
+
+	<p>In your custom integration rake file you need to define the list of plugins like this:</p>
+
+	<pre name="code" class="ruby">ENV['PLUGINS_TO_TEST'] = "brazilian_rails, email"
+	ENV['PLUGINS_TO_SPEC'] = "brazilian_rails"
+	</pre>
+
+	<h3 id="defining_the_environment_in_which_to_run_the_integration_process">Defining the environment in which to run the integration process.</h3>
+
+	<p>In your custom integration rake file insert the following line:</p>
+
+	<pre name="code" class="ruby">ENV['RAILS_ENV'] = 'development_cache'
+	</pre>
+
+	<p>The default environment is &#8216;development&#8217;.</p>
+
+	<h1 id="more_examples">More examples</h1>
+
+	<p>You can see more examples in the directory samples.</p>
+
+	<h1 id="forum">Forum</h1>
+
+	<p>Discussion about the Integration Plugin is on the forum below:</p>
+
+	<p>http://rubyforge.org/forum/?group_id=4662</p>
+
+	<h1 id="license">License</h1>
+
+	<p>This code is free to be used under the terms of the MIT license.</p>
+
+	<h1 id="contact">Contact</h1>
+
+	<p>Comments are welcome. Send your feedback through the forum or to <a href="http://www.improveit.com.br/contato">this page</a>.</p>
+</div>
+
+<script language="javascript">
+        dp.SyntaxHighlighter.ClipboardSwf = '/flash/clipboard.swf';
+        dp.SyntaxHighlighter.HighlightAll('code', true, false);
+</script>
+</body>
+</html>
