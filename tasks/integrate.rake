@@ -29,33 +29,41 @@ INTEGRATION_TASKS = %w(
     svn:commit            
 )
 
+
+# Extract project name.
 def project_name
   File.expand_path(RAILS_ROOT).split("/").last
 end
 
+# Run coverage test to check project coverage.
 def rcov_verify
   sh "ruby vendor/plugins/integrate/test/coverage_test.rb" 
 end
 
+# Stop mongrel server.
 def stop_mongrel
     sh "mongrel_rails stop" if FileTest.exists?('log/mongrel.pid') 
 end
 
+# Print message with separator.
 def p80(message)
   puts "-"*80
   puts message if message
   yield if block_given?
 end
 
+# Extract environment parameters
 def environment_parameters(key)
   return ENV[key].split(/\s*\,\s*/) if ENV[key]
   []
 end
 
+# Check if need to skip task.
 def skip_task?(task)
   environment_parameters('SKIP_TASKS').include?(task)  
 end
 
+# Remove old backups
 def remove_old_backups(backup_dir)
   backups_to_keep = ENV['NUMBER_OF_BACKUPS_TO_KEEP'] || 30
   backups = []
@@ -109,7 +117,7 @@ namespace :test do
     task :selected do
       environment_parameters('PLUGINS_TO_TEST').each do |name|
         if File.exist?("#{RAILS_ROOT}/vendor/plugins/#{name}")
-          puts "Executando testes do plugin #{name}"
+          puts "Executing tests for plugin: #{name}"
           puts `rake test:plugins PLUGIN=#{name}`
         end
       end if ENV['PLUGINS_TO_TEST']
@@ -162,7 +170,7 @@ namespace :spec do
     task :selected do
       environment_parameters('PLUGINS_TO_SPEC').each do |name|
         if File.exist?("#{RAILS_ROOT}/vendor/plugins/#{name}")
-          puts "Executando specs do plugin #{name}"
+          puts "Executing specs for plugin: #{name}"
           puts `rake spec:plugins PLUGIN=#{name}`
         end
       end if ENV['PLUGINS_TO_SPEC']
