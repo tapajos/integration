@@ -3,3 +3,6 @@ integration = File.expand_path(RAILS_ROOT + "/lib/tasks/integration.rake")
 
 require 'fileutils'
 FileUtils.cp sample, integration
+
+puts "Integration rake file created."
+puts integration
