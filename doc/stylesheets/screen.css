@@ -28,7 +28,7 @@ h1 {
 	color:					#D74768;
 	font:					normal normal bold 280% "Eurostile", "Trebuchet MS", "Lucida Grande", Helvetica, Arial, sans-serif;
 	padding-top:			130px;
-	background: 			#FFF url("../continuous_integration.jpg") no-repeat;
+	background: 			#FFF url("../images/continuous_integration.jpg") no-repeat;
 	margin:					0;
 }
 
@@ -100,4 +100,8 @@ img {
 	position:				absolute;
 	bottom:					4.3em;
 	right:					4.3em;
+}
+
+strong {
+	font-weight: 			bold;
 }

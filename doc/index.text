@@ -14,7 +14,6 @@ After installing the plugin is ready to be used and you will need to execute onl
 
 ## Dependencies
 
-* Linux or Mac OS X
 * [Subversion][s]
 * [Hpricot][h] (optional)
 * [Rcov][rc] (optional) 
@@ -40,7 +39,7 @@ The integration process is composed of several steps that are explained ahead. I
 * task backup:local  
 
 	Backup files locally. This is done before svn update to create a recovery point should you have problems during svn update. If a file merge creates undesirable effects on the software, you can recover from the backup file.
-	Backup file names have a timestamp. By default, the last 30 backups are kept. You may change this as we'll show shortly.
+	Backup file names have a timestamp. By default, the last 30 backups are kept. You may change this number as you'll see shortly. This task won't work on Windows because it uses [tar][]. So, if you're using Windows you'll have to write your own version of this task or just stop using Windows. We highly recommend the later.
 
 * task svn:update  
 
@@ -134,7 +133,9 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 
 ## Customize the integration process
 
-To customize the integration process you need to create a task file in your project, like lib/tasks/integration.rake.
+To customize the integration process you need to create a task file in your project, like:
+
+    lib/tasks/integration.rake
 
 ### Skipping tasks
 
@@ -232,7 +233,7 @@ A callback task is one that has the same name of a plugin task followed by :befo
 	  end
 	end
 
-### Defining the list of plugins in which you want to run tests or specs.
+### Defining the list of plugins for which you want to run tests or specs
 
 In your integration process, you may want to run tests or specs for certain plugins. All you need to do is name them, like this:
 
@@ -269,7 +270,7 @@ Backups are store in a sibling directory with the prefix 'backup-'. For instance
 
  	projects/amazing
 	projects/backup-amazing
-	projects/backup-amazing/amazing-20080304-104812.zip
+	projects/backup-amazing/amazing-20080304-104812.tar.gz
 
 ### More examples
 
@@ -305,7 +306,7 @@ Backups are store in a sibling directory with the prefix 'backup-'. For instance
 
 * Test conscious programmer
 
- 	You haven't jumped on the BDD bandwagon yet. Instead, you write tests, which is good, but they don't cover all of your code yet, which is bad. We believe you will [improve it][ii] and make sure your tests cover 100% of your code. In the meantime you might need to skip coverage checkings. Oh, you don't use [Selenium][sor] either! Shame on you! Try this:
+ 	You haven't jumped on the [BDD][] bandwagon yet. Instead, you write tests, which is good, but they don't cover all of your code yet, which is bad. We believe you will [improve it][ii] and make sure your tests cover 100% of your code. In the meantime you might need to skip coverage checkings. Oh, you also don't use [Selenium][sor]. Shame on you! Try this:
 
 		ENV['SKIP_TASKS'] = %w( 
 								spec:lib
@@ -324,11 +325,11 @@ Backups are store in a sibling directory with the prefix 'backup-'. For instance
 								test:selenium:server:stop
 								).join(',')
 								
-	As a matter of fact, since this might be very common, **we decided to create a lib/tasks/integration.rake for you when the plugin is installed. It has this very configuration and you can use as a base to customize your integration process.**
+	As a matter of fact, since this case might be very common, **we decided to create a lib/tasks/integration.rake for you when the plugin is installed. It has this very configuration and you can use it as a starting point to customize your integration process**.
 
 * Spec infected programmer
 
-	So you used to TDD all around but then someone told you that this is for gramma. The new wave has a name on it: BDD. So, of course, you now have specs covering 100% of your code and doesn't have any more tests. Great! Just do it:
+	So you used to [TDD][] all around but then someone told you that this is for gramma. The new wave has a name on it: [BDD][]. So, of course, you now have specs covering 100% of your code and doesn't have any more tests. Great! Just do it:
 	
 	    ENV['SKIP_TASKS'] = %w(
 							    test:units
@@ -344,9 +345,13 @@ You can see more examples in the samples directory.
 
 ## Forum
 
-Discussion about the Integration Plugin is on the forum below:
+Discussion about the Integration Plugin are welcome on the forum below:
 
 [http://rubyforge.org/forum/?group_id=4662][f]
+
+## Version
+
+Integration version 0.1.
 
 ## License
 
@@ -354,7 +359,7 @@ This code is free to be used under the terms of the [MIT license][mit].
 
 ## Contact
 
-Comments are welcome. Send your feedback through the [forum][f] or to [this page][co].
+Comments are welcome. Send your feedback through the [forum][f] or to [this page][co] (yes, it's in Portuguese, but you'll probably figure out what to do).
 
 ## Authors
 
@@ -367,7 +372,7 @@ This plugin is brought to you by [Improve It][ii].
 
 [![Improve It][logo]][ii]
 
-[logo]: 	improveit.gif "Improve It"
+[logo]: 	images/improveit.gif "Improve It"
 
 [mt]:		http://www.improveit.com.br/tapajos
 [vt]:		http://www.improveit.com.br/vinicius
@@ -385,3 +390,6 @@ This plugin is brought to you by [Improve It][ii].
 [mit]:	http://www.opensource.org/licenses/mit-license.php
 [ci]:   http://martinfowler.com/articles/continuousIntegration.html
 [cc]:   http://cruisecontrol.sourceforge.net
+[tar]:  http://en.wikipedia.org/wiki/Tar_%28file_format%29
+[BDD]:  http://en.wikipedia.org/wiki/Behavior_driven_development
+[TDD]:  http://en.wikipedia.org/wiki/Test-driven_development

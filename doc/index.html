@@ -28,7 +28,6 @@
 <h2>Dependencies</h2>
 
 <ul>
-<li>Linux or Mac OS X</li>
 <li><a href="http://subversion.tigris.org">Subversion</a></li>
 <li><a href="http://code.whytheluckystiff.net/hpricot">Hpricot</a> (optional)</li>
 <li><a href="http://eigenclass.org/hiki.rb?rcov">Rcov</a> (optional) </li>
@@ -53,7 +52,7 @@
 <li><p>task backup:local  </p>
 
 <p>Backup files locally. This is done before svn update to create a recovery point should you have problems during svn update. If a file merge creates undesirable effects on the software, you can recover from the backup file.
-Backup file names have a timestamp. By default, the last 30 backups are kept. You may change this as we'll show shortly.</p></li>
+Backup file names have a timestamp. By default, the last 30 backups are kept. You may change this number as you'll see shortly. This task won't work on Windows because it uses <a href="http://en.wikipedia.org/wiki/Tar_%28file_format%29">tar</a>. So, if you're using Windows you'll have to write your own version of this task or just stop using Windows. We highly recommend the later.</p></li>
 <li><p>task svn:update  </p>
 
 <p>Update files using svn update.</p></li>
@@ -126,7 +125,10 @@ Backup file names have a timestamp. By default, the last 30 backups are kept. Yo
 
 <h2>Customize the integration process</h2>
 
-<p>To customize the integration process you need to create a task file in your project, like lib/tasks/integration.rake.</p>
+<p>To customize the integration process you need to create a task file in your project, like:</p>
+
+<pre><code>lib/tasks/integration.rake
+</code></pre>
 
 <h3>Skipping tasks</h3>
 
@@ -230,7 +232,7 @@ namespace :test_acceptance do
 end
 </code></pre>
 
-<h3>Defining the list of plugins in which you want to run tests or specs.</h3>
+<h3>Defining the list of plugins for which you want to run tests or specs</h3>
 
 <p>In your integration process, you may want to run tests or specs for certain plugins. All you need to do is name them, like this:</p>
 
@@ -273,7 +275,7 @@ ENV['PLUGINS_TO_SPEC'] = "brazilian_rails"
 
 <pre><code>projects/amazing
 projects/backup-amazing
-projects/backup-amazing/amazing-20080304-104812.zip
+projects/backup-amazing/amazing-20080304-104812.tar.gz
 </code></pre>
 
 <h3>More examples</h3>
@@ -311,7 +313,7 @@ projects/backup-amazing/amazing-20080304-104812.zip
 <p>The fact that you can get away with this doesn't mean you should. Don't you think it's already time to grow up and become more professional about software development? I know you believe you have a great excuse to avoid writing those tests or specs. Still it's just an excuse. Write tests or write specs and make a better world!</p></li>
 <li><p>Test conscious programmer</p>
 
-<p>You haven't jumped on the BDD bandwagon yet. Instead, you write tests, which is good, but they don't cover all of your code yet, which is bad. We believe you will <a href="http://www.improveit.com.br">improve it</a> and make sure your tests cover 100% of your code. In the meantime you might need to skip coverage checkings. Oh, you don't use <a href="http://selenium-on-rails.openqa.org">Selenium</a> either! Shame on you! Try this:</p>
+<p>You haven't jumped on the <a href="http://en.wikipedia.org/wiki/Behavior_driven_development">BDD</a> bandwagon yet. Instead, you write tests, which is good, but they don't cover all of your code yet, which is bad. We believe you will <a href="http://www.improveit.com.br">improve it</a> and make sure your tests cover 100% of your code. In the meantime you might need to skip coverage checkings. Oh, you also don't use <a href="http://selenium-on-rails.openqa.org">Selenium</a>. Shame on you! Try this:</p>
 
 <pre><code>ENV['SKIP_TASKS'] = %w( 
                         spec:lib
@@ -331,10 +333,10 @@ projects/backup-amazing/amazing-20080304-104812.zip
                         ).join(',')
 </code></pre>
 
-<p>As a matter of fact, since this might be very common, <strong>we decided to create a lib/tasks/integration.rake for you when the plugin is installed. It has this very configuration and you can use as a base to customize your integration process.</strong></p></li>
+<p>As a matter of fact, since this case might be very common, <strong>we decided to create a lib/tasks/integration.rake for you when the plugin is installed. It has this very configuration and you can use it as a starting point to customize your integration process</strong>.</p></li>
 <li><p>Spec infected programmer</p>
 
-<p>So you used to TDD all around but then someone told you that this is for gramma. The new wave has a name on it: BDD. So, of course, you now have specs covering 100% of your code and doesn't have any more tests. Great! Just do it:</p>
+<p>So you used to <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a> all around but then someone told you that this is for gramma. The new wave has a name on it: <a href="http://en.wikipedia.org/wiki/Behavior_driven_development">BDD</a>. So, of course, you now have specs covering 100% of your code and doesn't have any more tests. Great! Just do it:</p>
 
 <pre><code>ENV['SKIP_TASKS'] = %w(
                         test:units
@@ -352,9 +354,13 @@ projects/backup-amazing/amazing-20080304-104812.zip
 
 <h2>Forum</h2>
 
-<p>Discussion about the Integration Plugin is on the forum below:</p>
+<p>Discussion about the Integration Plugin are welcome on the forum below:</p>
 
 <p><a href="http://rubyforge.org/forum/?group_id=4662">http://rubyforge.org/forum/?group_id=4662</a></p>
+
+<h2>Version</h2>
+
+<p>Integration version 0.1.</p>
 
 <h2>License</h2>
 
@@ -362,7 +368,7 @@ projects/backup-amazing/amazing-20080304-104812.zip
 
 <h2>Contact</h2>
 
-<p>Comments are welcome. Send your feedback through the <a href="http://rubyforge.org/forum/?group_id=4662">forum</a> or to <a href="http://www.improveit.com.br/contato">this page</a>.</p>
+<p>Comments are welcome. Send your feedback through the <a href="http://rubyforge.org/forum/?group_id=4662">forum</a> or to <a href="http://www.improveit.com.br/contato">this page</a> (yes, it's in Portuguese, but you'll probably figure out what to do).</p>
 
 <h2>Authors</h2>
 
@@ -373,6 +379,6 @@ projects/backup-amazing/amazing-20080304-104812.zip
 
 <p>This plugin is brought to you by <a href="http://www.improveit.com.br">Improve It</a>.</p>
 
-<p><a href="http://www.improveit.com.br"><img src="improveit.gif" alt="Improve It" title="Improve It"/></a></p>
+<p><a href="http://www.improveit.com.br"><img src="images/improveit.gif" alt="Improve It" title="Improve It"/></a></p>
   </body>
 </html>
