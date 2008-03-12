@@ -1,163 +1,378 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<link rel="stylesheet" href="stylesheets/screen.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="stylesheets/SyntaxHighlighter.css" type="text/css" media="screen" />
-	<script src="javascripts/shCore.js" type="text/javascript"></script>
-	<script src="javascripts/shBrushRuby.js" type="text/javascript"></script>
-	
-	<title>Integration</title>
-</head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+      <html xmlns="http://www.w3.org/1999/xhtml">
+    
+  <head>
+        <title>Integration</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="stylesheets/screen.css" type="text/css" media="screen" />
+      </head>
+    
+  <body>
+<h1>Integration</h1>
 
-<body>
-<div id="whole_page_container">
-	
-	<h1 id="title"> Integration </h1>
-	
-	<h1 id="what">What</h1>
+<h2>What</h2>
 
-	<p>&#8220;The term <strong><a href="http://en.wikipedia.org/wiki/Continuous_integration">Continuous integration</a></strong> emerged in the <a href="http://en.wikipedia.org/wiki/Extreme_Programming" title="Extreme Programming">Extreme Programming</a> community. It describes a set of <a href="http://en.wikipedia.org/wiki/Software_Engineering" title="Software Engineering">Software Engineering</a> practices that speed up the delivery of software by decreasing integration times. <a href="http://en.wikipedia.org/wiki/Extreme_programming" title="Extreme programming">Extreme programming</a> advocates <a href="http://en.wikipedia.org/wiki/Martin_Fowler" title="Martin Fowler">Martin Fowler</a> and <a href="http://en.wikipedia.org/wiki/Kent_Beck" title="Kent Beck">Kent Beck</a> first wrote about <strong>Continuous integration</strong> near the turn of the millennium: making it part of the <a href="http://en.wikipedia.org/wiki/Extreme_Programming" title="Extreme Programming">Extreme Programming</a> discipline. Fowler&#8217;s paper is a popular source of information on the subject. Beck&#8217;s book <a href="http://en.wikipedia.org/wiki/White_Book" title="White Book">White Book</a>, the original reference for <a href="http://en.wikipedia.org/wiki/Extreme_Programming" title="Extreme Programming">Extreme Programming</a>, also describes the term.&#8221;(<a href="http://en.wikipedia.org/wiki/Continuous_integration">wikipedia</a>)</p>
+<p>Integration is a <a href="http://www.rubyonrails.org">Ruby on Rails</a> plugin that provides a set of tasks to automate all steps of a synchronous <a href="http://en.wikipedia.org/wiki/Continuous_integration">continuous integration</a> process.</p>
 
-	<p>The <a href="http://rubyforge.org/projects/integration/">plugin Integration</a> for <a href="http://www.rubyonrails.org/">Ruby on Rails</a> provides a set of tasks to automatize all steps of the integration process.</p>
+<h2>Installing</h2>
 
-	<h1 id="minimum_requirements">Minimum Requirements</h1>
+<pre><code>ruby script/plugin install -x svn://rubyforge.org/var/svn/integration
+</code></pre>
 
-	<ul>
-	<li>Linux or Mac OS X</li>
-	<li><a href="http://subversion.tigris.org/">Subversion</a></li>
-	<li>Gem <a href="http://code.whytheluckystiff.net/hpricot/">Hpricot</a></li>
-	<li>Gem <a href="http://eigenclass.org/hiki.rb?rcov">Rcov</a></li>
-	<li><a href="http://selenium-on-rails.openqa.org/">Selenium on Rails</a></li>
-	<li><a href="http://rspec.info/">Rspec</a></li>
-	</ul>
+<p>After installing the plugin is ready to be used and you will need to execute only one task in order to integrate your code safely:</p>
 
-	<h1 id="installing">Installing</h1>
+<pre><code>rake integrate
+</code></pre>
 
-	<pre name="code" class="ruby">ruby script/plugin install -x svn://rubyforge.org/var/svn/integration
-	</pre>
+<h2>Dependencies</h2>
 
-	<p>After that the plugin is ready to be used and you will need to execute only one task.</p>
+<ul>
+<li>Linux or Mac OS X</li>
+<li><a href="http://subversion.tigris.org">Subversion</a></li>
+<li><a href="http://code.whytheluckystiff.net/hpricot">Hpricot</a> (optional)</li>
+<li><a href="http://eigenclass.org/hiki.rb?rcov">Rcov</a> (optional) </li>
+<li><a href="http://selenium-on-rails.openqa.org">Selenium on Rails</a> (optional)</li>
+<li><a href="http://rspec.info">Rspec</a> (optional)</li>
+</ul>
 
-	<pre name="code" class="ruby">rake integrate
-	</pre>
+<h2>Integration Steps</h2>
 
-	<h1 id="how_it_works">How it works</h1>
+<p>The integration process is composed of several steps that are explained ahead. It's possible to skip one or more steps and add other steps of your own. This will be demonstrated shortly. The complete set of steps are:</p>
 
-	<p>The integrate task executes many other tasks. It also contains a description which can be seen with &#8216;rake -T&#8217; command.</p>
+<ol>
+<li><p>task svn:status:check  </p>
 
-	<p>But it is very important that you know the sequence in which the tasks are called and how to skip or add tasks.
-	To customize the integration process you need to create a task file, like integration.rake, in the project rake directory.</p>
+<p>Check if all local files are subversion'ed and if no local files have been removed using only rm (file removal should always use svn remove instead).</p></li>
+<li><p>task log:clear  </p>
 
-	<ol>
-	<li>svn:status:check</li>
-	<li>log:clear</li>
-	<li>tmp:clear</li>
-	<li>backup:local</li>
-	<li>svn:update</li>
-	<li>db:migrate</li>
-	<li>test:units</li>
-	<li>test:functionals</li>
-	<li>test:integration</li>
-	<li>spec:lib</li>
-	<li>spec:models</li>
-	<li>spec:helpers</li>
-	<li>spec:controllers</li>
-	<li>spec:views</li>
-	<li>test:rcov:units</li>
-	<li>test:rcov:units:verify</li>
-	<li>test:rcov:functionals</li>
-	<li>test:rcov:functionals:verify</li>
-	<li>spec:rcov</li>
-	<li>spec:rcov:verify</li>
-	<li>test:plugins:selected</li>
-	<li>spec:plugins:selected</li>
-	<li>test:selenium:server:start</li>
-	<li>test_acceptance</li>
-	<li>test:selenium:server:stop</li>
-	<li>svn:commit</li>
-	</ol>
+<p>Remove log files.</p></li>
+<li><p>task tmp:clear  </p>
 
-	<h3 id="skipping_tasks">Skipping tasks.</h3>
+<p>Remove temporary files.</p></li>
+<li><p>task backup:local  </p>
 
-	<p>In your custom integration rake file you need to define the list of tasks that you want to skip thus:</p>
+<p>Backup files locally. This is done before svn update to create a recovery point should you have problems during svn update. If a file merge creates undesirable effects on the software, you can recover from the backup file.
+Backup file names have a timestamp. By default, the last 30 backups are kept. You may change this as we'll show shortly.</p></li>
+<li><p>task svn:update  </p>
 
-	<pre name="code" class="ruby">ENV['SKIP_TASKS'] = %w( spec:lib
-	                        spec:models
-	                        spec:helpers
-	                        spec:controllers
-	                        spec:views
-	                        test:rcov:units
-	                        test:rcov:units:verify
-	                        test:rcov:functionals
-	                        test:rcov:functionals:verify
-	                        spec:rcov
-	                        spec:rcov:verify
-	                        test:selenium:server:start
-	                        test_acceptance
-	                        test:selenium:server:stop
-	                        ).join(",")
-	</pre>
+<p>Update files using svn update.</p></li>
+<li><p>task db:migrate</p>
 
-	<h3 id="adding_another_task_to_the_process">Adding another task to the process.</h3>
+<p>Execute any new database migration created by other team members since the last integration.</p></li>
+<li><p>test:units  </p>
 
-	<p>In your custom integration rake file you need to define the new task and define the position in which to insert in process. See the example below.</p>
+<p>Run all unit tests.</p></li>
+<li><p>test:functionals  </p>
 
-	<pre name="code" class="ruby">namespace :test_acceptance do
-	  desc 'Runs cache sweeper and generate static 500 error page'
-	  task :before do
-	    Rake::Task["cache:sweeper:start"].invoke 
-	    Rake::Task["error500"].invoke 
-	  end
+<p>Run all functional tests.</p></li>
+<li><p>test:integration  </p>
 
-	  desc 'Runs cache sweeper'
-	  task :after do
-	    Rake::Task["cache:sweeper:stop"].invoke 
-	  end
-	end
-	</pre>
+<p>Run all integration tests.</p></li>
+<li><p>spec:lib  </p>
 
-	<h3 id="defining_the_list_of_plugins_in_which_you_want_to_run_tests_or_specs">Defining the list of plugins in which you want to run tests or specs.</h3>
+<p>Run all lib specs.</p></li>
+<li><p>spec:models  </p>
 
-	<p>In your custom integration rake file you need to define the list of plugins like this:</p>
+<p>Run all model specs.</p></li>
+<li><p>spec:helpers  </p>
 
-	<pre name="code" class="ruby">ENV['PLUGINS_TO_TEST'] = "brazilian_rails, email"
-	ENV['PLUGINS_TO_SPEC'] = "brazilian_rails"
-	</pre>
+<p>Run all helper specs.</p></li>
+<li><p>spec:controllers  </p>
 
-	<h3 id="defining_the_environment_in_which_to_run_the_integration_process">Defining the environment in which to run the integration process.</h3>
+<p>Run all controller specs.</p></li>
+<li><p>spec:views  </p>
 
-	<p>In your custom integration rake file insert the following line:</p>
+<p>Run all view specs.</p></li>
+<li><p>test:rcov:units  </p>
 
-	<pre name="code" class="ruby">ENV['RAILS_ENV'] = 'development_cache'
-	</pre>
+<p>Run coverage analysis of the unit tests.</p></li>
+<li><p>test:rcov:units:verify  </p>
 
-	<p>The default environment is &#8216;development&#8217;.</p>
+<p>Check if unit tests cover 100% of the application code.</p></li>
+<li><p>test:rcov:functionals  </p>
 
-	<h1 id="more_examples">More examples</h1>
+<p>Run coverage analysis of the functional tests.</p></li>
+<li><p>test:rcov:functionals:verify  </p>
 
-	<p>You can see more examples in the directory samples.</p>
+<p>Check if functional tests cover 100% of the application code.</p></li>
+<li><p>spec:rcov  </p>
 
-	<h1 id="forum">Forum</h1>
+<p>Run coverage analysis of the specs.</p></li>
+<li><p>spec:rcov:verify  </p>
 
-	<p>Discussion about the Integration Plugin is on the forum below:</p>
+<p>Check if specs cover 100% of the application code.</p></li>
+<li><p>test:plugins:selected  </p>
 
-	<p>http://rubyforge.org/forum/?group_id=4662</p>
+<p>Run tests on selected plugins. You might want to always run the tests of plugins you created, for example, while ignoring the tests of third party plugins. We'll show below how you can specify the plugins you want to test.</p></li>
+<li><p>spec:plugins:selected  </p>
 
-	<h1 id="license">License</h1>
+<p>Same as previous step, but with specs, instead of tests.</p></li>
+<li><p>test:selenium:server:start  </p>
 
-	<p>This code is free to be used under the terms of the MIT license.</p>
+<p>If you use <a href="http://selenium-on-rails.openqa.org">Selenium</a> to test your application, as you certainly should, you'll need to make sure the webserver is up and running before running <a href="http://selenium-on-rails.openqa.org">Selenium</a> tests. That's what this task does.</p></li>
+<li><p>test_acceptance</p>
 
-	<h1 id="contact">Contact</h1>
+<p>Run all <a href="http://selenium-on-rails.openqa.org">Selenium</a> tests.</p></li>
+<li><p>test:selenium:server:stop</p>
 
-	<p>Comments are welcome. Send your feedback through the forum or to <a href="http://www.improveit.com.br/contato">this page</a>.</p>
-</div>
+<p>Stop the webserver.</p></li>
+<li><p>svn:commit</p>
 
-<script language="javascript">
-        dp.SyntaxHighlighter.ClipboardSwf = '/flash/clipboard.swf';
-        dp.SyntaxHighlighter.HighlightAll('code', true, false);
-</script>
-</body>
+<p>Commit your changes. If any of the previous tasks break, because one test failed, for instance, the script won't commit. Actually this task runs only if every checking done before work well.</p></li>
+</ol>
+
+<p>Using this almost paranoid sequence of steps it will be hard to check in bad code in your repository, which is good, very good. The idea is that you should treat your repository as a sacred place, where only good code should ever enter.    </p>
+
+<h2>Customize the integration process</h2>
+
+<p>To customize the integration process you need to create a task file in your project, like lib/tasks/integration.rake.</p>
+
+<h3>Skipping tasks</h3>
+
+<p>In your custom integration rake file you may define a comma separated list of tasks that you don't want to execute. Let's see some examples:</p>
+
+<ul>
+<li><p>Don't execute migrations  </p>
+
+<pre><code>ENV['SKIP_TASKS'] = 'db:migrate'
+</code></pre></li>
+<li><p>Don't execute spec coverage, nor spec coverage verification  </p>
+
+<pre><code>ENV['SKIP_TASKS'] = 'spec:rcov, spec:rcov:verify'
+</code></pre></li>
+<li><p>Don't execute any tests nor specs at all</p>
+
+<pre><code>ENV['SKIP_TASKS'] = %w( 
+                        test:units
+                        test:functionals
+                        test:integration
+                        spec:lib
+                        spec:models
+                        spec:helpers
+                        spec:controllers
+                        spec:views
+                        test:rcov:units
+                        test:rcov:units:verify
+                        test:rcov:functionals
+                        test:rcov:functionals:verify
+                        spec:rcov
+                        spec:rcov:verify
+                        test:selenium:server:start
+                        test_acceptance
+                        test:selenium:server:stop
+                        ).join(",")
+</code></pre></li>
+</ul>
+
+<p>You can also define SKIP_TASKS when you run the integration process like this:</p>
+
+<pre><code>rake integrate SKIP_TASKS=spec:rcov,spec:rcov:verify
+</code></pre>
+
+<h3>Adding other tasks</h3>
+
+<p>Integration plugin also defines callback tasks that you can use to customize it with your own tasks. You can add other tasks before or after any of the plugin tasks. Let's see an example. Say you want to sweep HTML cache pages after running <a href="http://selenium-on-rails.openqa.org">Selenium</a>. To do that, you've just created a task cache:sweep. Let's configure Integration to run it just after Selenium:</p>
+
+<pre><code>    namespace :test_acceptance do
+        desc 'Runs cache sweeper'
+        task :after do
+            Rake::Task["cache:sweep"].invoke 
+        end
+    end
+</code></pre>
+
+<p>A callback task is one that has the same name of a plugin task followed by :before or :after. In this case, the plugin defines a task called test_acceptance. So, you may create test_acceptance:before that will be executed before test_acceptance and test_acceptance:after to execute as soon as test_acceptance finishes. To do that, you will need to use namespaces, like we did in the previous example. Now, let's see a real example from one of our projects:</p>
+
+<pre><code>def integration_sweeper
+  sh "script/integration_sweeper"
+end
+
+namespace :svn do
+  namespace :status do
+    namespace :check do
+      task :before do
+        integration_sweeper
+      end
+    end
+  end
+end
+
+desc 'Generates error 500 page'
+task :error500 do
+  `curl http://localhost:4000/server_error -o #{RAILS_ROOT}/public/500.html`
+end
+
+namespace :cache do
+  namespace :sweeper do
+    desc 'Runs cache_sweeper before executing Selenium'
+    task :start do
+      integration_sweeper
+    end
+
+    desc 'Runs cache_sweeper after executing Selenium'
+    task :stop do
+      integration_sweeper
+    end
+  end
+end
+
+namespace :test_acceptance do
+  desc 'Runs cache sweeper and generate static 500 error page'
+  task :before do
+    Rake::Task["error500"].invoke 
+  end
+
+  desc 'Runs cache sweeper'
+  task :after do
+    Rake::Task["cache:sweeper:stop"].invoke 
+  end
+end
+</code></pre>
+
+<h3>Defining the list of plugins in which you want to run tests or specs.</h3>
+
+<p>In your integration process, you may want to run tests or specs for certain plugins. All you need to do is name them, like this:</p>
+
+<pre><code>ENV['PLUGINS_TO_TEST'] = "packr, email"
+ENV['PLUGINS_TO_SPEC'] = "brazilian_rails"
+</code></pre>
+
+<p>You can also inform these when you run rake integrate:</p>
+
+<pre><code>rake integrate PLUGINS_TO_TEST=packr,email PLUGINS_TO_SPEC=brazilian_rails
+</code></pre>
+
+<h3>Defining the environment in which to run the integration process</h3>
+
+<p>Integration will run against the development environment by default. If you need it to run using another environment, you can do this:</p>
+
+<pre><code>ENV['RAILS_ENV'] = 'development_cache'
+</code></pre>
+
+<p>Once again, you can also inform this while running rake integrate:</p>
+
+<pre><code>rake integrate RAILS_ENV=test
+</code></pre>
+
+<h3>Selenium port</h3>
+
+<p>When running Selenium, you might need to specify another port other them the default port 4000. That's how you do it:</p>
+
+<pre><code>ENV['SELENIUM_PORT'] = 3000
+</code></pre>
+
+<h3>Number of backups to keep</h3>
+
+<p>If you want to change the number of backups that will be kept, use this:</p>
+
+<pre><code>ENV['NUMBER_OF_BACKUPS_TO_KEEP'] = 50
+</code></pre>
+
+<p>Backups are store in a sibling directory with the prefix 'backup-'. For instance, suppose you have a project 'amazing' in the projects directory. After the first backup, you will end up with something like this:</p>
+
+<pre><code>projects/amazing
+projects/backup-amazing
+projects/backup-amazing/amazing-20080304-104812.zip
+</code></pre>
+
+<h3>More examples</h3>
+
+<ul>
+<li><p>Reckless programmer</p>
+
+<p>So you don't have tests, nor specs but you still want to use the plugin. Besides, you want to keep the log files and prefer not to run migrations. You might get away with this customized lib/tasks/integration.rake:</p>
+
+<pre><code>ENV['SKIP_TASKS'] = %w(
+                        log:clear
+                        db:migrate
+                        test:units
+                        test:functionals
+                        test:integration
+                        spec:lib
+                        spec:models
+                        spec:helpers
+                        spec:controllers
+                        spec:views
+                        test:rcov:units
+                        test:rcov:units:verify
+                        test:rcov:functionals
+                        test:rcov:functionals:verify
+                        spec:rcov
+                        spec:rcov:verify
+                        test:plugins:selected
+                        spec:plugins:selected
+                        test:selenium:server:start
+                        test_acceptance
+                        test:selenium:server:stop
+                        ).join(",")
+</code></pre>
+
+<p>The fact that you can get away with this doesn't mean you should. Don't you think it's already time to grow up and become more professional about software development? I know you believe you have a great excuse to avoid writing those tests or specs. Still it's just an excuse. Write tests or write specs and make a better world!</p></li>
+<li><p>Test conscious programmer</p>
+
+<p>You haven't jumped on the BDD bandwagon yet. Instead, you write tests, which is good, but they don't cover all of your code yet, which is bad. We believe you will <a href="http://www.improveit.com.br">improve it</a> and make sure your tests cover 100% of your code. In the meantime you might need to skip coverage checkings. Oh, you don't use <a href="http://selenium-on-rails.openqa.org">Selenium</a> either! Shame on you! Try this:</p>
+
+<pre><code>ENV['SKIP_TASKS'] = %w( 
+                        spec:lib
+                        spec:models
+                        spec:helpers
+                        spec:controllers
+                        spec:views
+                        test:rcov:units
+                        test:rcov:units:verify
+                        test:rcov:functionals
+                        test:rcov:functionals:verify
+                        spec:rcov
+                        spec:rcov:verify
+                        test:selenium:server:start
+                        test_acceptance
+                        test:selenium:server:stop
+                        ).join(',')
+</code></pre>
+
+<p>As a matter of fact, since this might be very common, <strong>we decided to create a lib/tasks/integration.rake for you when the plugin is installed. It has this very configuration and you can use as a base to customize your integration process.</strong></p></li>
+<li><p>Spec infected programmer</p>
+
+<p>So you used to TDD all around but then someone told you that this is for gramma. The new wave has a name on it: BDD. So, of course, you now have specs covering 100% of your code and doesn't have any more tests. Great! Just do it:</p>
+
+<pre><code>ENV['SKIP_TASKS'] = %w(
+                        test:units
+                        test:functionals
+                        test:integration
+                        test:rcov:units
+                        test:rcov:units:verify
+                        test:rcov:functionals
+                        test:rcov:functionals:verify
+                        ).join(",")
+</code></pre></li>
+</ul>
+
+<p>You can see more examples in the samples directory.</p>
+
+<h2>Forum</h2>
+
+<p>Discussion about the Integration Plugin is on the forum below:</p>
+
+<p><a href="http://rubyforge.org/forum/?group_id=4662">http://rubyforge.org/forum/?group_id=4662</a></p>
+
+<h2>License</h2>
+
+<p>This code is free to be used under the terms of the <a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a>.</p>
+
+<h2>Contact</h2>
+
+<p>Comments are welcome. Send your feedback through the <a href="http://rubyforge.org/forum/?group_id=4662">forum</a> or to <a href="http://www.improveit.com.br/contato">this page</a>.</p>
+
+<h2>Authors</h2>
+
+<p><a href="http://www.improveit.com.br/tapajos">Marcos Tapajós</a><br/>
+<a href="http://www.improveit.com.br/vinicius">Vinícius Teles</a></p>
+
+<h2>Shameless advertisement</h2>
+
+<p>This plugin is brought to you by <a href="http://www.improveit.com.br">Improve It</a>.</p>
+
+<p><a href="http://www.improveit.com.br"><img src="improveit.gif" alt="Improve It" title="Improve It"/></a></p>
+  </body>
 </html>

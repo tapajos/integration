@@ -1,5 +1,4 @@
 require 'find'
-require 'zip/zip'
 
 INTEGRATION_TASKS = %w( 
     svn:status:check
