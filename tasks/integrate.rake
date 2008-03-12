@@ -68,7 +68,7 @@ end
 def remove_old_backups(backup_dir)
   backups_to_keep = ENV['NUMBER_OF_BACKUPS_TO_KEEP'] || 30
   backups = []
-  Find.find(backup_dir) { |file_name| backups << file_name if !File.directory?(file_name) && file_name =~ /.*\.zip$/ }
+  Find.find(backup_dir) { |file_name| backups << file_name if !File.directory?(file_name) && file_name =~ /.*\.tar.gz$/ }
   backups.sort!
   (backups - backups.last(backups_to_keep - 1)).each do |file_name|
     puts "Removing #{file_name}..."
@@ -82,10 +82,7 @@ namespace :backup do
     backup_dir = '../backup-' + project_name
     sh "mkdir #{backup_dir}" if !FileTest.exists?(backup_dir)
     remove_old_backups(backup_dir)
-    Zip::ZipFile::open("#{backup_dir}/#{project_name}-#{Time.now.strftime('%Y%m%d-%H%M%S')}.zip", true) { 
-       |zipfile| 
-       Dir["../#{project_name}/**/*"].each { |file_name| zipfile.add(file_name, file_name) }
-    }    
+    sh "tar cfz #{backup_dir}/#{project_name}-#{Time.now.strftime('%Y%m%d-%H%M%S')}.tar.gz ../#{project_name}"
   end
 end
 
