@@ -3,7 +3,8 @@ puts File.expand_path(File.dirname(__FILE__))
 task :generate_doc do
   plugin_path = File.expand_path(File.dirname(__FILE__) + "/..")
   bin_path = "#{plugin_path}/bin"
-  doc_path = "#{plugin_path}/docs"
+  doc_path = "#{plugin_path}/doc"
+  sh "chmod +x #{bin_path}/bluecloth"
   sh "#{bin_path}/bluecloth #{doc_path}/index.text > #{doc_path}/index.html"
   
   index = File.read("#{doc_path}/index.html")
