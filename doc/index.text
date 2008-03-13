@@ -325,7 +325,7 @@ Backups are store in a sibling directory with the prefix 'backup-'. For instance
 								test:selenium:server:stop
 								).join(',')
 								
-	As a matter of fact, since this case might be very common, **we decided to create a lib/tasks/integration.rake for you when the plugin is installed. It has this very configuration and you can use it as a starting point to customize your integration process**.
+	As a matter of fact, since this case might be very common, **we decided to create a lib/tasks/integration.rake for you once the plugin has been installed. It has this very configuration and you can use it as a starting point to customize your integration process**.
 
 * Spec infected programmer
 
