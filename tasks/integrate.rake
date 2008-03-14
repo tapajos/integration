@@ -37,7 +37,7 @@ end
 
 # Run coverage test to check project coverage.
 def rcov_verify
-  sh "ruby vendor/plugins/integrate/test/coverage_test.rb" 
+  sh "ruby #{File.expand_path(File.dirname(__FILE__) + '/../test/coverage_test.rb')}" 
 end
 
 # Stop mongrel server.
