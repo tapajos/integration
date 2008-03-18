@@ -272,6 +272,12 @@ Backups are store in a sibling directory with the prefix 'backup-'. For instance
 	projects/backup-amazing
 	projects/backup-amazing/amazing-20080304-104812.tar.gz
 
+### Commit messages
+
+If you don't care to write commit messages, you can skip them:
+
+	ENV['SKIP_COMMIT_MESSAGES'] = 'true'
+
 ### More examples
 
 * Reckless programmer
@@ -351,7 +357,11 @@ Discussion about the Integration Plugin are welcome on the forum below:
 
 ## Version
 
-Integration version 0.1.1.
+Integration version 0.2
+
+## Release Notes
+
+* Version 0.2 - Added support for ENV['SKIP\_COMMIT\_MESSAGES'].
 
 ## License
 

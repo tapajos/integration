@@ -106,8 +106,10 @@ namespace :svn do
   
   desc 'Commit project.'
   task :commit do
-    sh "svn commit vendor/plugins/*"
-    sh "svn commit"
+    message = ''
+    message = "-m ''" if ENV['SKIP_COMMIT_MESSAGES']
+    sh "svn commit #{message} vendor/plugins/*"
+    sh "svn commit #{message}"
   end
 end
 
