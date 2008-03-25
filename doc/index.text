@@ -357,11 +357,12 @@ Discussion about the Integration Plugin are welcome on the forum below:
 
 ## Version
 
-Integration version 0.2
+Integration version 0.2.1
 
 ## Release Notes
 
-* Version 0.2 - Added support for ENV['SKIP\_COMMIT\_MESSAGES'].
+* Version 0.2.1 - BUG FIX: Setting ENV['RAILS\_ENV'] wasn't affecting migrations. This bug fix changes this behavior and makes sure that ENV['RAILS_ENV'] set by the user will always be respected, for all tasks. Thanks to Sylvestre Mergulhão for point this out.
+* Version 0.2   - Added support for ENV['SKIP\_COMMIT\_MESSAGES'].
 
 ## License
 
