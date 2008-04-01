@@ -191,7 +191,7 @@ task :integrate do
   INTEGRATION_TASKS.each do |subtask|
     if Rake::Task.task_defined?("#{subtask}:before") && !skip_task?(subtask)
       p80("Executing #{subtask}:before...") do 
-        RAILS_ENV = ENV['RAILS_ENV']
+        RAILS_ENV = ENV['RAILS_ENV'] || 'development'
         Rake::Task["#{subtask}:before"].invoke 
       end
     end
@@ -200,14 +200,14 @@ task :integrate do
       p80 "Skipping #{subtask}..."
     else
       p80("Executing #{subtask}...") do 
-        RAILS_ENV = ENV['RAILS_ENV']
+        RAILS_ENV = ENV['RAILS_ENV'] || 'development'
         Rake::Task[subtask].invoke 
       end
     end
 
     if Rake::Task.task_defined?("#{subtask}:after") && !skip_task?(subtask)
       p80("Executing #{subtask}:after...") do 
-        RAILS_ENV = ENV['RAILS_ENV']
+        RAILS_ENV = ENV['RAILS_ENV'] || 'development'
         Rake::Task["#{subtask}:after"].invoke 
       end
     end

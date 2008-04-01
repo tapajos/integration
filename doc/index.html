@@ -372,6 +372,7 @@ projects/backup-amazing/amazing-20080304-104812.tar.gz
 <h2>Release Notes</h2>
 
 <ul>
+<li>Version 0.2.3 - BUG FIX: Rake db:migrate fails when default ENV['RAILS_ENV'] is used. Thanks to Celestino Gomes for fix this bug.</li>
 <li>Version 0.2.2 - Removed vendor/plugins/* commit. This commit is necessary when use plugins with externals but it isn`t a good practice. <a href="http://piston.rubyforge.org/">Piston</a> is the correct way to use externals plugins. If you want to use externals commit in your integration process you can create a svn:commit:after task.</li>
 <li>Version 0.2.1 - BUG FIX: Setting ENV['RAILS_ENV'] wasn't affecting migrations. This bug fix changes this behavior and makes sure that ENV['RAILS_ENV'] set by the user will always be respected, for all tasks. Thanks to Sylvestre Mergulhão for point this out.</li>
 <li>Version 0.2   - Added support for ENV['SKIP_COMMIT_MESSAGES'].</li>
