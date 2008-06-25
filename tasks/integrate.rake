@@ -1,11 +1,18 @@
 require 'find'
 
+SCM = ENV['SCM'] || 'svn'
+
+if !(SCM == 'svn' || SCM == 'git' || SCM == 'git_with_svn')
+  puts "#{SCM} is not supported. Please use svn or git."
+  exit
+end
+
 INTEGRATION_TASKS = %w( 
-    svn:status:check
+    scm:status:check
     log:clear
     tmp:clear
     backup:local
-    svn:update
+    scm:update
     db:migrate
     test:units
     test:functionals
@@ -26,9 +33,8 @@ INTEGRATION_TASKS = %w(
     test:selenium:server:start
     test_acceptance
     test:selenium:server:stop
-    svn:commit            
+    scm:commit            
 )
-
 
 # Extract project name.
 def project_name
@@ -85,6 +91,32 @@ namespace :backup do
   end
 end
 
+namespace :scm do
+  namespace :status do
+    desc 'Check if project can be committed to the repository.'
+    task :check do
+      Rake::Task["#{SCM}:status:check"].invoke 
+    end
+  end
+
+  desc 'Update files from repository.'
+  task :update do
+    Rake::Task["svn:updade"].invoke if SCM == 'svn' 
+    Rake::Task["git:pull"].invoke if SCM == 'git'
+    Rake::Task["git_with_svn:rebase"].invoke if SCM == 'git_with_svn' 
+  end
+  
+  desc 'Commit project.'
+  task :commit do
+    Rake::Task["svn:commit"].invoke if SCM == 'svn' 
+    if SCM == 'git' 
+      Rake::Task["git:push"].invoke 
+    end
+    Rake::Task["git_with_svn:dcommit"].invoke if SCM == 'git_with_svn'
+  end
+end
+
+
 namespace :svn do
   namespace :status do
     desc 'Check if project can be committed to the repository.'
@@ -111,6 +143,58 @@ namespace :svn do
     sh "svn commit #{message}"
   end
 end
+
+namespace :git do
+  namespace :status do
+    desc 'Check if project can be committed to the repository.'
+    task :check do
+      result = `git status`
+      if !result.include?('nothing to commit')
+        puts "Files out of sync:"
+        puts result
+        exit
+      end
+    end
+  end
+
+  desc 'Update files from repository.'
+  task :pull do
+    sh "git pull"
+  end
+  
+  desc 'Commit project.'
+  task :commit do
+    message = ''
+    message = "-m ''" if ENV['SKIP_COMMIT_MESSAGES']
+    sh "git commit -a -v #{message}"
+  end
+  
+  desc 'Push project.'
+  task :push do
+    sh "git push"
+  end
+end
+
+namespace :git_with_svn do
+  namespace :status do
+    task :check do
+      Rake::Task["git:status:check"].invoke
+    end
+  end
+  
+  desc 'Rebase the git project from svn repository'
+  task :rebase do
+    sh "git svn rebase"
+  end
+  
+  desc 'Send all changes to svn repository'
+  task :dcommit do
+    sh "git svn dcommit"
+  end
+  
+end
+
+
 
 namespace :test do
   namespace :plugins do

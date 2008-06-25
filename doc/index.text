@@ -14,7 +14,7 @@ After installing the plugin is ready to be used and you will need to execute onl
 
 ## Dependencies
 
-* [Subversion][s]
+* A scm(currently supported are [Subversion][s], [git][] and [git-svn][git]
 * [Hpricot][h] (optional)
 * [Rcov][rc] (optional) 
 * [Selenium on Rails][sor] (optional)
@@ -24,9 +24,9 @@ After installing the plugin is ready to be used and you will need to execute onl
 
 The integration process is composed of several steps that are explained ahead. It's possible to skip one or more steps and add other steps of your own. This will be demonstrated shortly. The complete set of steps are:
 
-1. task svn:status:check  
+1. task scm:status:check  
 
-	Check if all local files are subversion'ed and if no local files have been removed using only rm (file removal should always use svn remove instead).
+	Check if all local files are under control of your scm. If your scm is subversion, it also checks if no local files have been removed using only rm (file removal should always use svn remove instead).
 
 * task log:clear  
 
@@ -38,12 +38,12 @@ The integration process is composed of several steps that are explained ahead. I
 
 * task backup:local  
 
-	Backup files locally. This is done before svn update to create a recovery point should you have problems during svn update. If a file merge creates undesirable effects on the software, you can recover from the backup file.
+	Backup files locally. This is done before scm update to create a recovery point if you have problems during scm update. If a file merge creates undesirable effects on the software, you can recover from the backup file.
 	Backup file names have a timestamp. By default, the last 30 backups are kept. You may change this number as you'll see shortly. This task won't work on Windows because it uses [tar][]. So, if you're using Windows you'll have to write your own version of this task or just stop using Windows. We highly recommend the later.
 
-* task svn:update  
+* task scm:update  
 
-	Update files using svn update.
+	Update local files from your remote scm repository.
 
 * task db:migrate
 
@@ -125,7 +125,7 @@ The integration process is composed of several steps that are explained ahead. I
 
 	Stop the webserver.
 
-* svn:commit
+* scm:commit
 
 	Commit your changes. If any of the previous tasks break, because one test failed, for instance, the script won't commit. Actually this task runs only if every checking done before work well.
 	
@@ -136,6 +136,18 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 To customize the integration process you need to create a task file in your project, like:
 
     lib/tasks/integration.rake
+
+### Changing scm
+
+By default the integration process uses subversion, but you can customize it to use git(your remote repository is git) or git-svn(your remote repository is svn, but you uses git locally):
+
+* git
+
+		ENV['SCM'] = 'git'
+
+* git-svn
+
+		ENV['SCM'] = 'git_with_svn'
 
 ### Skipping tasks
 
@@ -192,7 +204,7 @@ A callback task is one that has the same name of a plugin task followed by :befo
 	  sh "script/integration_sweeper"
 	end
 
-	namespace :svn do
+	namespace :scm do
 	  namespace :status do
 	    namespace :check do
 	      task :before do
@@ -357,10 +369,11 @@ Discussion about the Integration Plugin are welcome on the forum below:
 
 ## Version
 
-Integration version 0.2.2
+Integration version 0.2.4
 
 ## Release Notes
 
+* Version 0.2.4 - Added support for git and git-svn. Thanks to [Sylvestre Mergulhão][sm] and [Eduardo Fiorezi][edu].
 * Version 0.2.3 - BUG FIX: Rake db:migrate fails when default ENV['RAILS\_ENV'] is used. Thanks to Celestino Gomes for fix this bug.
 * Version 0.2.2 - Removed vendor/plugins/* commit. This commit is necessary when use plugins with externals but it isn\`t a good practice. [Piston][piston] is the correct way to use externals plugins. If you want to use externals commit in your integration process you can create a svn:commit:after task.
 * Version 0.2.1 - BUG FIX: Setting ENV['RAILS\_ENV'] wasn't affecting migrations. This bug fix changes this behavior and makes sure that ENV['RAILS_ENV'] set by the user will always be respected, for all tasks. Thanks to Sylvestre Mergulhão for point this out.
@@ -392,6 +405,7 @@ This plugin is brought to you by [Improve It][ii].
 [vt]:		http://www.improveit.com.br/vinicius
 [f]:		http://rubyforge.org/forum/?group_id=4662
 [s]:		http://subversion.tigris.org
+[git]:          http://git.or.cz/
 [h]:		http://code.whytheluckystiff.net/hpricot
 [rc]:		http://eigenclass.org/hiki.rb?rcov
 [sor]:	http://selenium-on-rails.openqa.org
@@ -407,3 +421,5 @@ This plugin is brought to you by [Improve It][ii].
 [tar]:  http://en.wikipedia.org/wiki/Tar_%28file_format%29
 [BDD]:  http://en.wikipedia.org/wiki/Behavior_driven_development
 [TDD]:  http://en.wikipedia.org/wiki/Test-driven_development
+[sm]: http://mergulhao.info/
+[edu]: http://tudoquequerosaber.com/

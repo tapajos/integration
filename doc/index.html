@@ -28,7 +28,7 @@
 <h2>Dependencies</h2>
 
 <ul>
-<li><a href="http://subversion.tigris.org">Subversion</a></li>
+<li>A scm(currently supported are <a href="http://subversion.tigris.org">Subversion</a>, <a href="http://git.or.cz/">git</a> and <a href="http://git.or.cz/">git-svn</a></li>
 <li><a href="http://code.whytheluckystiff.net/hpricot">Hpricot</a> (optional)</li>
 <li><a href="http://eigenclass.org/hiki.rb?rcov">Rcov</a> (optional) </li>
 <li><a href="http://selenium-on-rails.openqa.org">Selenium on Rails</a> (optional)</li>
@@ -40,9 +40,9 @@
 <p>The integration process is composed of several steps that are explained ahead. It's possible to skip one or more steps and add other steps of your own. This will be demonstrated shortly. The complete set of steps are:</p>
 
 <ol>
-<li><p>task svn:status:check  </p>
+<li><p>task scm:status:check  </p>
 
-<p>Check if all local files are subversion'ed and if no local files have been removed using only rm (file removal should always use svn remove instead).</p></li>
+<p>Check if all local files are under control of your scm. If your scm is subversion, it also checks if no local files have been removed using only rm (file removal should always use svn remove instead).</p></li>
 <li><p>task log:clear  </p>
 
 <p>Remove log files.</p></li>
@@ -51,11 +51,11 @@
 <p>Remove temporary files.</p></li>
 <li><p>task backup:local  </p>
 
-<p>Backup files locally. This is done before svn update to create a recovery point should you have problems during svn update. If a file merge creates undesirable effects on the software, you can recover from the backup file.
+<p>Backup files locally. This is done before scm update to create a recovery point if you have problems during scm update. If a file merge creates undesirable effects on the software, you can recover from the backup file.
 Backup file names have a timestamp. By default, the last 30 backups are kept. You may change this number as you'll see shortly. This task won't work on Windows because it uses <a href="http://en.wikipedia.org/wiki/Tar_%28file_format%29">tar</a>. So, if you're using Windows you'll have to write your own version of this task or just stop using Windows. We highly recommend the later.</p></li>
-<li><p>task svn:update  </p>
+<li><p>task scm:update  </p>
 
-<p>Update files using svn update.</p></li>
+<p>Update local files from your remote scm repository.</p></li>
 <li><p>task db:migrate</p>
 
 <p>Execute any new database migration created by other team members since the last integration.</p></li>
@@ -116,7 +116,7 @@ Backup file names have a timestamp. By default, the last 30 backups are kept. Yo
 <li><p>test:selenium:server:stop</p>
 
 <p>Stop the webserver.</p></li>
-<li><p>svn:commit</p>
+<li><p>scm:commit</p>
 
 <p>Commit your changes. If any of the previous tasks break, because one test failed, for instance, the script won't commit. Actually this task runs only if every checking done before work well.</p></li>
 </ol>
@@ -129,6 +129,21 @@ Backup file names have a timestamp. By default, the last 30 backups are kept. Yo
 
 <pre><code>lib/tasks/integration.rake
 </code></pre>
+
+<h3>Changing scm</h3>
+
+<p>By default the integration process uses subversion, but you can customize it to use git(your remote repository is git) or git-svn(your remote repository is svn, but you uses git locally):</p>
+
+<ul>
+<li><p>git</p>
+
+<pre><code>ENV['SCM'] = 'git'
+</code></pre></li>
+<li><p>git-svn</p>
+
+<pre><code>ENV['SCM'] = 'git_with_svn'
+</code></pre></li>
+</ul>
 
 <h3>Skipping tasks</h3>
 
@@ -190,7 +205,7 @@ Backup file names have a timestamp. By default, the last 30 backups are kept. Yo
   sh "script/integration_sweeper"
 end
 
-namespace :svn do
+namespace :scm do
   namespace :status do
     namespace :check do
       task :before do
@@ -367,11 +382,12 @@ projects/backup-amazing/amazing-20080304-104812.tar.gz
 
 <h2>Version</h2>
 
-<p>Integration version 0.2.2</p>
+<p>Integration version 0.2.4</p>
 
 <h2>Release Notes</h2>
 
 <ul>
+<li>Version 0.2.4 - Added support for git and git-svn. Thanks to <a href="http://mergulhao.info/">Sylvestre Mergulhão</a> and <a href="http://tudoquequerosaber.com/">Eduardo Fiorezi</a>.</li>
 <li>Version 0.2.3 - BUG FIX: Rake db:migrate fails when default ENV['RAILS_ENV'] is used. Thanks to Celestino Gomes for fix this bug.</li>
 <li>Version 0.2.2 - Removed vendor/plugins/* commit. This commit is necessary when use plugins with externals but it isn`t a good practice. <a href="http://piston.rubyforge.org/">Piston</a> is the correct way to use externals plugins. If you want to use externals commit in your integration process you can create a svn:commit:after task.</li>
 <li>Version 0.2.1 - BUG FIX: Setting ENV['RAILS_ENV'] wasn't affecting migrations. This bug fix changes this behavior and makes sure that ENV['RAILS_ENV'] set by the user will always be respected, for all tasks. Thanks to Sylvestre Mergulhão for point this out.</li>
