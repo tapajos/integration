@@ -101,7 +101,7 @@ namespace :scm do
 
   desc 'Update files from repository.'
   task :update do
-    Rake::Task["svn:updade"].invoke if SCM == 'svn' 
+    Rake::Task["svn:update"].invoke if SCM == 'svn' 
     Rake::Task["git:pull"].invoke if SCM == 'git'
     Rake::Task["git_with_svn:rebase"].invoke if SCM == 'git_with_svn' 
   end
