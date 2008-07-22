@@ -149,7 +149,7 @@ namespace :git do
     desc 'Check if project can be committed to the repository.'
     task :check do
       result = `git status`
-      if !result.include?('nothing to commit')
+      if result.include?('Untracked files:') || result.include?('unmerged:')
         puts "Files out of sync:"
         puts result
         exit
@@ -165,12 +165,13 @@ namespace :git do
   desc 'Commit project.'
   task :commit do
     message = ''
-    message = "-m ''" if ENV['SKIP_COMMIT_MESSAGES']
+    message = "-m 'Committed by integration plugin.'" if ENV['SKIP_COMMIT_MESSAGES']
     sh "git commit -a -v #{message}"
   end
   
   desc 'Push project.'
   task :push do
+    Rake::Task['git:commit'].invoke 
     sh "git push"
   end
 end
