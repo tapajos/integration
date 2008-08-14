@@ -145,10 +145,15 @@ namespace :svn do
 end
 
 namespace :git do
+  
+  def has_files_to_commit?
+    return false if (`git status`).include?('nothing to commit')
+    true  
+  end
+  
   namespace :status do
     desc 'Check if project can be committed to the repository.'
     task :check do
-      result = `git status`
       if result.include?('Untracked files:') || result.include?('unmerged:')
         puts "Files out of sync:"
         puts result
@@ -171,7 +176,7 @@ namespace :git do
   
   desc 'Push project.'
   task :push do
-    Rake::Task['git:commit'].invoke 
+    Rake::Task['git:commit'].invoke if has_files_to_commit? 
     sh "git push"
   end
 end
