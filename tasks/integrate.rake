@@ -154,6 +154,7 @@ namespace :git do
   namespace :status do
     desc 'Check if project can be committed to the repository.'
     task :check do
+      result = `git status`
       if result.include?('Untracked files:') || result.include?('unmerged:')
         puts "Files out of sync:"
         puts result
