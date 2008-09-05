@@ -6,7 +6,7 @@ Integration is a [Ruby on Rails][ror] plugin that provides a set of tasks to aut
 
 ## Installing
 
-    ruby script/plugin install -x svn://rubyforge.org/var/svn/integration
+    ruby script/plugin install git://github.com/tapajos/integration.git
 
 After installing the plugin is ready to be used and you will need to execute only one task in order to integrate your code safely:
 
