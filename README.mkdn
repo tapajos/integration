@@ -385,7 +385,7 @@ This code is free to be used under the terms of the [MIT license][mit].
 
 ## Contact
 
-Comments are welcome. Send your feedback through the [forum][f] or to [this page][co] (yes, it's in Portuguese, but you'll probably figure out what to do).
+Comments are welcome. Send your feedback through the [forum][f] or to [this page][co]
 
 ## Authors
 
@@ -401,7 +401,7 @@ This plugin is brought to you by [Improve It][ii].
 [logo]: 	http://www.improveit.com.br/images/logo/logo_improve_it_screen.gif "Improve It"
 
 [piston]:	http://piston.rubyforge.org/
-[mt]:		http://www.improveit.com.br/tapajos
+[mt]:		http://www.improveit.com.br/en/company/tapajos
 [vt]:		http://www.improveit.com.br/vinicius
 [f]:		http://rubyforge.org/forum/?group_id=4662
 [s]:		http://subversion.tigris.org
@@ -413,8 +413,8 @@ This plugin is brought to you by [Improve It][ii].
 [rz]:		http://rubyzip.sourceforge.net/
 [ror]:	http://www.rubyonrails.org
 [sci]:	http://jamesshore.com/Blog/Why%20I%20Dont%20Like%20CruiseControl.html
-[ii]:		http://www.improveit.com.br
-[co]:		http://www.improveit.com.br/contato
+[ii]:		http://www.improveit.com.br/en
+[co]:		http://www.improveit.com.br/en/contact
 [mit]:	http://www.opensource.org/licenses/mit-license.php
 [ci]:   http://martinfowler.com/articles/continuousIntegration.html
 [cc]:   http://cruisecontrol.sourceforge.net
