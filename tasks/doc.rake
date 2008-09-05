@@ -5,7 +5,7 @@ task :generate_doc do
   bin_path = "#{plugin_path}/bin"
   doc_path = "#{plugin_path}/doc"
   sh "chmod +x #{bin_path}/bluecloth"
-  sh "#{bin_path}/bluecloth #{doc_path}/index.text > #{doc_path}/index.html"
+  sh "#{bin_path}/bluecloth #{plugin_path}/README.mkdn > #{doc_path}/index.html"
   
   index = File.read("#{doc_path}/index.html")
   index.gsub!(/<html>/, 
