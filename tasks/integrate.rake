@@ -1,12 +1,5 @@
 require 'find'
 
-SCM = ENV['SCM'] || 'svn'
-
-if !(SCM == 'svn' || SCM == 'git' || SCM == 'git_with_svn')
-  puts "#{SCM} is not supported. Please use svn or git."
-  exit
-end
-
 INTEGRATION_TASKS = %w( 
     scm:status:check
     log:clear
@@ -35,6 +28,15 @@ INTEGRATION_TASKS = %w(
     test:selenium:server:stop
     scm:commit            
 )
+
+def scm
+  scm = ENV['SCM'] || 'svn'
+  if !(scm == 'svn' || scm == 'git' || scm == 'git_with_svn')
+    puts "#{scm} is not supported. Please use svn or git."
+    exit
+  end
+  scm
+end
 
 # Extract project name.
 def project_name
@@ -95,24 +97,24 @@ namespace :scm do
   namespace :status do
     desc 'Check if project can be committed to the repository.'
     task :check do
-      Rake::Task["#{SCM}:status:check"].invoke 
+      Rake::Task["#{scm}:status:check"].invoke 
     end
   end
 
   desc 'Update files from repository.'
   task :update do
-    Rake::Task["svn:update"].invoke if SCM == 'svn' 
-    Rake::Task["git:pull"].invoke if SCM == 'git'
-    Rake::Task["git_with_svn:rebase"].invoke if SCM == 'git_with_svn' 
+    Rake::Task["svn:update"].invoke if scm == 'svn' 
+    Rake::Task["git:pull"].invoke if scm == 'git'
+    Rake::Task["git_with_svn:rebase"].invoke if scm == 'git_with_svn' 
   end
   
   desc 'Commit project.'
   task :commit do
-    Rake::Task["svn:commit"].invoke if SCM == 'svn' 
-    if SCM == 'git' 
+    Rake::Task["svn:commit"].invoke if scm == 'svn' 
+    if scm == 'git' 
       Rake::Task["git:push"].invoke 
     end
-    Rake::Task["git_with_svn:dcommit"].invoke if SCM == 'git_with_svn'
+    Rake::Task["git_with_svn:dcommit"].invoke if scm == 'git_with_svn'
   end
 end
 
