@@ -365,7 +365,7 @@ You can see more examples in the samples directory.
 
 Discussion about the Integration Plugin are welcome on the forum below:
 
-[http://rubyforge.org/forum/?group_id=4662][f]
+http://rubyforge.org/forum/?group_id=4662
 
 ## Version
 
