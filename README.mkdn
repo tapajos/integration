@@ -396,6 +396,10 @@ Comments are welcome. Send your feedback through the [forum][f] or to [this page
 
 This plugin is brought to you by [Improve It][ii].
 
+[![Improve It][logo]][ii]
+
+[logo]: 	http://www.improveit.com.br/images/logo/logo_improve_it_screen.gif "Improve It"
+
 [piston]:	http://piston.rubyforge.org/
 [mt]:		http://www.improveit.com.br/en/company/tapajos
 [vt]:		http://www.improveit.com.br/vinicius
