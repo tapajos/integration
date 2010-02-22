@@ -1,34 +1,5 @@
 require 'find'
 
-INTEGRATION_TASKS = %w( 
-    scm:status:check
-    log:clear
-    tmp:clear
-    backup:local
-    scm:update
-    db:migrate
-    test:units
-    test:functionals
-    test:integration
-    spec:lib
-    spec:models
-    spec:helpers
-    spec:controllers
-    spec:views
-    test:rcov:units
-    test:rcov:units:verify
-    test:rcov:functionals
-    test:rcov:functionals:verify
-    spec:rcov
-    spec:rcov:verify
-    test:plugins:selected
-    spec:plugins:selected
-    test:selenium:server:start
-    test_acceptance
-    test:selenium:server:stop
-    scm:commit            
-)
-
 def scm
   scm = ENV['SCM'] || 'svn'
   if !(scm == 'svn' || scm == 'git' || scm == 'git_with_svn')
@@ -271,8 +242,19 @@ namespace :spec do
   end
 end
 
+namespace :integration do
+  task :start => ["scm:status:check", "log:clear", "tmp:clear", "backup:local", "scm:update", "db:migrate"]
+  task :finish => ["scm:commit"]
+end
+
 desc 'Integrate new code to repository'
 task :integrate do
+  if !defined?(INTEGRATION_TASKS)
+    p80 "You should define INTEGRATION_TASKS on lib/tasks/integration.rake"
+    p80 "Look at example files on vendor/plugins/integration/samples"
+    exit
+  end
+  
   INTEGRATION_TASKS.each do |subtask|
     p80("Executing #{subtask}...") do 
       RAILS_ENV = ENV['RAILS_ENV'] || 'development'
