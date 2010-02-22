@@ -167,7 +167,7 @@ namespace :git do
 
   desc 'Update files from repository.'
   task :pull do
-    sh "git pull"
+    sh "git pull --rebase"
   end
   
   desc 'Commit project.'
