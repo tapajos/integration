@@ -50,7 +50,7 @@ end
 
 # Stop mongrel server.
 def stop_mongrel
-    sh "mongrel_rails stop" if FileTest.exists?('log/mongrel.pid') 
+  sh "mongrel_rails stop" if FileTest.exists?('log/mongrel.pid') 
 end
 
 # Print message with separator.
@@ -64,11 +64,6 @@ end
 def environment_parameters(key)
   return ENV[key].split(/\s*\,\s*/) if ENV[key]
   []
-end
-
-# Check if need to skip task.
-def skip_task?(task)
-  environment_parameters('SKIP_TASKS').include?(task)  
 end
 
 # Remove old backups
@@ -200,10 +195,7 @@ namespace :git_with_svn do
   task :dcommit do
     sh "git svn dcommit"
   end
-  
 end
-
-
 
 namespace :test do
   namespace :plugins do
@@ -282,27 +274,9 @@ end
 desc 'Integrate new code to repository'
 task :integrate do
   INTEGRATION_TASKS.each do |subtask|
-    if Rake::Task.task_defined?("#{subtask}:before") && !skip_task?(subtask)
-      p80("Executing #{subtask}:before...") do 
-        RAILS_ENV = ENV['RAILS_ENV'] || 'development'
-        Rake::Task["#{subtask}:before"].invoke 
-      end
-    end
-
-    if skip_task?(subtask)
-      p80 "Skipping #{subtask}..."
-    else
-      p80("Executing #{subtask}...") do 
-        RAILS_ENV = ENV['RAILS_ENV'] || 'development'
-        Rake::Task[subtask].invoke 
-      end
-    end
-
-    if Rake::Task.task_defined?("#{subtask}:after") && !skip_task?(subtask)
-      p80("Executing #{subtask}:after...") do 
-        RAILS_ENV = ENV['RAILS_ENV'] || 'development'
-        Rake::Task["#{subtask}:after"].invoke 
-      end
+    p80("Executing #{subtask}...") do 
+      RAILS_ENV = ENV['RAILS_ENV'] || 'development'
+      Rake::Task[subtask].invoke 
     end
   end
 end
