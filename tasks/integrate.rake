@@ -33,7 +33,7 @@ def scm
   scm = ENV['SCM'] || 'svn'
   if !(scm == 'svn' || scm == 'git' || scm == 'git_with_svn')
     puts "#{scm} is not supported. Please use svn or git."
-    exit
+    fail
   end
   scm
 end
@@ -128,7 +128,7 @@ namespace :svn do
         puts "Files out of sync:"
         files_out_of_sync.each { |filename| puts filename }
         puts 
-        exit
+        fail
       end
     end
   end
@@ -160,7 +160,7 @@ namespace :git do
       if result.include?('Untracked files:') || result.include?('unmerged:')
         puts "Files out of sync:"
         puts result
-        exit
+        fail
       end
     end
   end
