@@ -8,4 +8,5 @@ Gem::Specification.new do |s|
   s.files       = Dir["{lib/**/*.rb, lib/**/*.rake, test/**/*.rb,README.mkdn,Rakefile,MIT-LICENSE,*.gemspec}"]
 
   s.add_runtime_dependency('rcov')
+  s.add_runtime_dependency('hpricot')
 end
