@@ -1,1 +1,1 @@
-Dir["#{Gem.searcher.find('integration').full_gem_path}/lib/tasks/*.rake"].each { |ext| load ext }
+Dir["#{Gem.searcher.find('integration').full_gem_path}/lib/tasks/*.rake"].each { |ext| load ext } if defined?(Rake)
