@@ -253,6 +253,8 @@ task :integrate do
     p80 %{
 You should define INTEGRATION_TASKS constant. We recommend that you define it on lib/tasks/integration.rake file. The file doesn't exists. You should create it in your project.
 
+You'll probably want to add coverage/ to your .gitignore file.
+
 A sample content look like this:
 
 INTEGRATION_TASKS = %w( 
