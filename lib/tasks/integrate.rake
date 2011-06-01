@@ -250,8 +250,21 @@ end
 desc 'Integrate new code to repository'
 task :integrate do
   if !defined?(INTEGRATION_TASKS)
-    p80 "You should define INTEGRATION_TASKS on lib/tasks/integration.rake"
-    p80 "Look at example files on vendor/plugins/integration/samples"
+    p80 %{
+You should define INTEGRATION_TASKS constant. We recommend that you define it on lib/tasks/integration.rake file. The file doesn't exists. You should create it in your project.
+
+A sample content look like this:
+
+INTEGRATION_TASKS = %w( 
+  integration:start
+  spec:rcov
+  spec:rcov:verify
+  jasmine:ci
+  integration:finish
+)
+
+Look at other samples at: http://github.com/mergulhao/integration/tree/master/samples
+}
     exit
   end
   
