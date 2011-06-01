@@ -6,4 +6,6 @@ Gem::Specification.new do |s|
   s.authors     = ["Marcos Tapajós", "Sylvestre Mergulhão","Vinícius Teles"]
   s.homepage    = "http://github.com/mergulhao/integration"
   s.files       = Dir["{lib/**/*.rb, lib/**/*.rake, test/**/*.rb,README.mkdn,Rakefile,MIT-LICENSE,*.gemspec}"]
+
+  s.add_runtime_dependency('rcov')
 end
