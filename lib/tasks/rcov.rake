@@ -14,7 +14,7 @@ RCOV = "rcov --no-color"
 
 def find_source(sub_directory)
   result = []
-  Find.find("#{RAILS_ROOT}/#{sub_directory}") do |file_name|
+  Find.find("#{Rails.root}/#{sub_directory}") do |file_name|
     result << file_name if file_name =~ /.*\.rb$/
   end
   result.join(" ")

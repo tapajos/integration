@@ -11,7 +11,7 @@ end
 
 # Extract project name.
 def project_name
-  File.expand_path(RAILS_ROOT).split("/").last
+  File.expand_path(Rails.root).split("/").last
 end
 
 # Run coverage test to check project coverage.
@@ -173,7 +173,7 @@ namespace :test do
     desc 'Run tests for each plugin defined in PLUGINS_TO_TEST'
     task :selected do
       environment_parameters('PLUGINS_TO_TEST').each do |name|
-        if File.exist?("#{RAILS_ROOT}/vendor/plugins/#{name}")
+        if File.exist?("#{Rails.root}/vendor/plugins/#{name}")
           puts "Executing tests for plugin: #{name}"
           puts `rake test:plugins PLUGIN=#{name}`
         end
@@ -226,7 +226,7 @@ namespace :spec do
     desc 'Run specs for each plugin defined in PLUGINS_TO_SPEC'
     task :selected do
       environment_parameters('PLUGINS_TO_SPEC').each do |name|
-        if File.exist?("#{RAILS_ROOT}/vendor/plugins/#{name}")
+        if File.exist?("#{Rails.root}/vendor/plugins/#{name}")
           puts "Executing specs for plugin: #{name}"
           puts `rake spec:plugins PLUGIN=#{name}`
         end
