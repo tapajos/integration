@@ -1,7 +1,7 @@
 require 'find'
 
 def scm
-  scm = ENV['SCM'] || 'svn'
+  scm = ENV['SCM'] || 'git'
   if !(scm == 'svn' || scm == 'git' || scm == 'git_with_svn')
     puts "#{scm} is not supported. Please use svn or git."
     exit
