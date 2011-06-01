@@ -1,5 +1,5 @@
 $: << File.dirname(__FILE__) + '/..' << File.dirname(__FILE__) + '/../lib'
-%w(test/unit rubygems init hpricot open-uri).each { |lib| require lib }
+%w(test/unit rubygems hpricot open-uri).each { |lib| require lib }
 
 class CoverageTest < Test::Unit::TestCase
   
