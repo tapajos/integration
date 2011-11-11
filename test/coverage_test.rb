@@ -12,10 +12,18 @@ class CoverageTest < Test::Unit::TestCase
    `rake coverage` if !FileTest.exists?(COVERAGE_FILE)
     
     doc = Hpricot(File.read(COVERAGE_FILE))
-    files_without_coverage = doc.search("//div[@class='percent_graph_legend']").
+
+    if RUBY_VERSION =~ /1.8.7/
+      files_without_coverage = doc.search("//div[@class='percent_graph_legend']").
                                  search("//tt").
                                  search("[text()!='100.00%']").
                                  search('../../../td[1]/a')
+    else
+      files_without_coverage = doc.search("//div[@id='AllFiles']").
+                                   search("//td[2]").
+                                   search("//[text()!='100.0 %']").
+                                   search('../td[1]/a/')
+    end
     assert files_without_coverage.empty?, "Bad Boy! Coverage is not 100%... \n Files with problem:\n\t#{files_without_coverage.collect{|file_name| file_name.inner_text}.join("\n\t")}"
     puts "Congratulation! Your coverage is 100%!"
   end
