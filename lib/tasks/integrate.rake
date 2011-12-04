@@ -14,11 +14,6 @@ def project_name
   File.expand_path(Rails.root).split("/").last
 end
 
-# Run coverage test to check project coverage.
-def rcov_verify
-  sh "ruby #{File.expand_path(File.dirname(__FILE__) + '/../../test/coverage_test.rb')}" 
-end
-
 # Print message with separator.
 def p80(message)
   puts "-"*80
@@ -157,18 +152,14 @@ namespace :git_with_svn do
   end
 end
 
-namespace :spec do
-  namespace :rcov do
-    desc 'Check specs coverage.'
-    task :verify do
-      rcov_verify
-    end
-  end
-end
-
 namespace :integration do
   task :start => ["scm:status:check", "log:clear", "tmp:clear", "backup:local", "scm:update"]
   task :finish => ["scm:commit"]
+
+  desc 'Check code coverage'
+  task :coverage_verify do
+    sh "ruby #{File.expand_path(File.dirname(__FILE__) + '/../../test/coverage_test.rb')}" 
+  end
 end
 
 desc 'Integrate new code to repository'
@@ -184,8 +175,8 @@ A sample content look like this:
 INTEGRATION_TASKS = %w( 
   integration:start
   db:migrate
-  spec:rcov
-  spec:rcov:verify
+  spec
+  integration:coverage_verify
   jasmine:ci
   integration:finish
 )
