@@ -26,12 +26,6 @@ def p80(message)
   yield if block_given?
 end
 
-# Extract environment parameters
-def environment_parameters(key)
-  return ENV[key].split(/\s*\,\s*/) if ENV[key]
-  []
-end
-
 # Remove old backups
 def remove_old_backups(backup_dir)
   backups_to_keep = ENV['NUMBER_OF_BACKUPS_TO_KEEP'] || 30
@@ -164,18 +158,6 @@ namespace :git_with_svn do
 end
 
 namespace :test do
-  namespace :plugins do
-    desc 'Run tests for each plugin defined in PLUGINS_TO_TEST'
-    task :selected do
-      environment_parameters('PLUGINS_TO_TEST').each do |name|
-        if File.exist?("#{Rails.root}/vendor/plugins/#{name}")
-          puts "Executing tests for plugin: #{name}"
-          puts `rake test:plugins PLUGIN=#{name}`
-        end
-      end if ENV['PLUGINS_TO_TEST']
-    end
-  end
-  
   namespace :rcov do
     namespace :units do
       desc 'Check unit tests coverage.'
@@ -197,18 +179,6 @@ namespace :test do
 end
 
 namespace :spec do
-  namespace :plugins do
-    desc 'Run specs for each plugin defined in PLUGINS_TO_SPEC'
-    task :selected do
-      environment_parameters('PLUGINS_TO_SPEC').each do |name|
-        if File.exist?("#{Rails.root}/vendor/plugins/#{name}")
-          puts "Executing specs for plugin: #{name}"
-          puts `rake spec:plugins PLUGIN=#{name}`
-        end
-      end if ENV['PLUGINS_TO_SPEC']
-    end
-  end
-
   namespace :rcov do
     desc 'Check specs coverage.'
     task :verify do
