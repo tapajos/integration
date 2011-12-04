@@ -19,11 +19,6 @@ def rcov_verify
   sh "ruby #{File.expand_path(File.dirname(__FILE__) + '/../../test/coverage_test.rb')}" 
 end
 
-# Stop mongrel server.
-def stop_mongrel
-  sh "mongrel_rails stop" if FileTest.exists?('log/mongrel.pid') 
-end
-
 # Print message with separator.
 def p80(message)
   puts "-"*80
@@ -196,27 +191,7 @@ namespace :test do
       end
     end
   end
-  
-  desc 'Start Mongrel, run Selenium tests and stop Mongrel.'
-  task :selenium => ["test:selenium:server:start", :test_acceptance, "test:selenium:server:stop"]
-  
-  namespace :selenium do
-    namespace :server do
-      desc 'Start Mongrel on port 4000.'
-      task :start do
-        stop_mongrel
-        rails_env = ENV['RAILS_ENV'] || 'test'
-        port = ENV['SELENIUM_PORT'] || '4000'
-        sh "mongrel_rails start -d -e #{rails_env} -p #{port} && sleep 2s" 
-      end
 
-      desc 'Stop Mongrel.'
-      task :stop do
-        stop_mongrel
-      end
-    end
-  end
-  
   desc 'Run test coverage.'
   task :rcov => ["test:rcov:units", "test:rcov:units:verify", "test:rcov:functionals", "test:rcov:functionals:verify"]
 end
