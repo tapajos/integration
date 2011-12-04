@@ -63,6 +63,11 @@ namespace :integration do
   task :coverage_verify do
     sh "ruby #{File.expand_path(File.dirname(__FILE__) + '/../../test/coverage_test.rb')}" 
   end
+
+  desc 'Run bundle install'
+  task :bundle_install do
+    sh 'bundle install'
+  end
 end
 
 desc 'Integrate new code to repository'
@@ -77,6 +82,7 @@ A sample content look like this:
 
 INTEGRATION_TASKS = %w( 
   integration:start
+  integration:bundle_install
   db:migrate
   spec
   integration:coverage_verify
