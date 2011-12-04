@@ -58,7 +58,7 @@ namespace :integration do
 
   desc 'Check code coverage'
   task :coverage_verify do
-    sh "ruby #{File.expand_path(File.dirname(__FILE__) + '/../../test/coverage_test.rb')}" 
+    sh "ruby #{File.expand_path(File.dirname(__FILE__) + '/../../test/coverage_test.rb')}"
   end
 
   desc 'Run bundle install'
@@ -77,7 +77,7 @@ You'll probably want to add coverage/ to your .gitignore file.
 
 A sample content look like this:
 
-INTEGRATION_TASKS = %w( 
+INTEGRATION_TASKS = %w(
   integration:start
   integration:bundle_install
   db:migrate
@@ -91,11 +91,11 @@ Look at other samples at: http://github.com/mergulhao/integration/tree/master/sa
 }
     exit
   end
-  
+
   INTEGRATION_TASKS.each do |subtask|
-    p80("Executing #{subtask}...") do 
+    p80("Executing #{subtask}...") do
       RAILS_ENV = ENV['RAILS_ENV'] || 'development'
-      Rake::Task[subtask].invoke 
+      Rake::Task[subtask].invoke
     end
   end
 end
