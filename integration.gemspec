@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 Gem::Specification.new do |s|
   s.name        = "integration"
   s.version     = "0.0.1"
@@ -6,7 +7,6 @@ Gem::Specification.new do |s|
   s.authors     = ["Marcos Tapajós", "Sylvestre Mergulhão","Vinícius Teles"]
   s.homepage    = "http://github.com/mergulhao/integration"
   s.files       = Dir["{lib/**/*.rb, lib/**/*.rake, test/**/*.rb,README.mkdn,Rakefile,MIT-LICENSE,*.gemspec}"]
-
-  s.add_runtime_dependency('rcov')
+  s.required_rubygems_version = "1.8.0"
   s.add_runtime_dependency('hpricot')
 end
