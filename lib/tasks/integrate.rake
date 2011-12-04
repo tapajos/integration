@@ -87,7 +87,6 @@ INTEGRATION_TASKS = %w(
   integration:finish
 )
 
-Look at other samples at: http://github.com/mergulhao/integration/tree/master/samples
 }
     exit
   end
