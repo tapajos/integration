@@ -157,27 +157,6 @@ namespace :git_with_svn do
   end
 end
 
-namespace :test do
-  namespace :rcov do
-    namespace :units do
-      desc 'Check unit tests coverage.'
-      task :verify do
-        rcov_verify
-      end
-    end
-
-    namespace :functionals do
-      desc 'Check functional tests coverage.'
-      task :verify do
-        rcov_verify
-      end
-    end
-  end
-
-  desc 'Run test coverage.'
-  task :rcov => ["test:rcov:units", "test:rcov:units:verify", "test:rcov:functionals", "test:rcov:functionals:verify"]
-end
-
 namespace :spec do
   namespace :rcov do
     desc 'Check specs coverage.'
