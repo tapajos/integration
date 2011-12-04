@@ -167,7 +167,7 @@ namespace :spec do
 end
 
 namespace :integration do
-  task :start => ["scm:status:check", "log:clear", "tmp:clear", "backup:local", "scm:update", "db:migrate"]
+  task :start => ["scm:status:check", "log:clear", "tmp:clear", "backup:local", "scm:update"]
   task :finish => ["scm:commit"]
 end
 
@@ -183,6 +183,7 @@ A sample content look like this:
 
 INTEGRATION_TASKS = %w( 
   integration:start
+  db:migrate
   spec:rcov
   spec:rcov:verify
   jasmine:ci
