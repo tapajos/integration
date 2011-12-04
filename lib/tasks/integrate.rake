@@ -30,7 +30,7 @@ namespace :backup do
     backup_dir = '../backups/backup-' + project_name
     sh "mkdir -p #{backup_dir}" if !FileTest.exists?(backup_dir)
     remove_old_backups(backup_dir)
-    sh "tar cfz #{backup_dir}/#{project_name}-#{Time.now.strftime('%Y%m%d-%H%M%S')}.tar.gz ../#{project_name}"
+    sh "tar cfz #{backup_dir}/#{project_name}-#{Time.now.strftime('%Y%m%d-%H%M%S')}.tar.gz ."
   end
 end
 
