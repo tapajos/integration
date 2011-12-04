@@ -9,11 +9,9 @@ class CoverageTest < Test::Unit::TestCase
   
   COVERAGE_FILE = "coverage/index.html"
   def test_if_application_is_fully_covered
-   `rake coverage` if !FileTest.exists?(COVERAGE_FILE)
-    
     doc = Hpricot(File.read(COVERAGE_FILE))
 
-    if RUBY_VERSION =~ /1.8.7/
+    if RUBY_VERSION =~ /1.8/
       files_without_coverage = doc.search("//div[@class='percent_graph_legend']").
                                  search("//tt").
                                  search("[text()!='100.00%']").
