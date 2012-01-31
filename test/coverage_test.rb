@@ -17,6 +17,6 @@ class CoverageTest < Test::Unit::TestCase
                                    search('../td[1]/a/')
     end
     assert files_without_coverage.empty?, "Bad Boy! Coverage is not 100%... \n Files with problem:\n\t#{files_without_coverage.collect{|file_name| file_name.inner_text}.join("\n\t")}"
-    puts "Congratulation! Your coverage is 100%!"
+    puts "Congratulations! Your coverage is 100%!"
   end
 end
