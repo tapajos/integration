@@ -22,6 +22,19 @@ After installing the plugin is ready to be used and you will need to execute onl
 * [Hpricot][h] to verify coverage
 * [Rcov][rc](Ruby 1.8) or [Simplecov][sc](Ruby 1.9) (optional)
 
+## [ProTip] Using Simplecov
+
+Using a simplecov on your test suite will make your tests to run slower. We resolved it using an enviroment variable called "coverage" on spec_helper.rb to turn on/off the simplecov. See below
+
+spec_helper.rb
+
+    if ENV['coverage'] == 'on'
+      require 'simplecov'
+      SimpleCov.start 'rails'
+    end
+
+To turn on simplecov, you just need to put :turn_on_simplecov task on your integration.rake
+
 ## Integration Steps
 
 The integration process is composed of several steps that are explained ahead. It's possible to skip one or more steps and add other steps of your own. This will be demonstrated shortly. The complete set of steps are:
@@ -54,6 +67,10 @@ The integration process is composed of several steps that are explained ahead. I
 * Your test/spec suite  
 
 	Set the rake task your test/spec suite needs to run. Use a command that generate the coverage files.
+
+* turn_on_simplecov
+
+	Turn on simplecov on integration.
 
 * coverage_verify  
 
