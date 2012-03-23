@@ -89,10 +89,10 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 	So you don't have tests, nor specs but you still want to use the integration. You might get away with this customized lib/tasks/integration.rake:
 	
 	    INTEGRATION_TASKS = %w(
-        integration:start
-        db:migrate
-        integration:finish
-      )
+	        integration:start
+          db:migrate
+          integration:finish
+          )
 
 	The fact that you can get away with this doesn't mean you should. Don't you think it's already time to grow up and become more professional about software development? I know you believe you have a great excuse to avoid writing those tests or specs. Still it's just an excuse. Write tests or write specs and make a better world!
 
@@ -100,13 +100,13 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 
  	You haven't jumped on the [BDD][] bandwagon yet. Instead, you write tests, which is good, but they don't cover all of your code yet, which is bad. We believe you will [improve it][ii] and make sure your tests cover 100% of your code. In the meantime you might need to skip coverage checkings. Oh, you also don't use [Selenium][sor]. Shame on you! Try this:
 
-		INTEGRATION_TASKS = %w(
-      integration:start
-      db:migrate
-      test
-      integration:finish
-    )
-								
+	    INTEGRATION_TASKS = %w(
+	        integration:start
+          db:migrate
+          test
+          integration:finish
+          )
+
 	As a matter of fact, since this case might be very common, **we decided to create a lib/tasks/integration.rake for you once the plugin has been installed. It has this very configuration and you can use it as a starting point to customize your integration process**.
 
 * Spec infected programmer
@@ -114,12 +114,12 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 	So you used to [TDD][] all around but then someone told you that this is for gramma. The new wave has a name on it: [BDD][]. So, of course, you now have specs covering 100% of your code and doesn't have any more tests. Great! Just do it:
 	
 	    INTEGRATION_TASKS = %w(
-        integration:start
-        db:migrate
-        spec
-        integration:coverage_verify
-        integration:finish
-      )
+          integration:start
+          db:migrate
+          spec
+          integration:coverage_verify
+          integration:finish
+          )
 
 ## Version
 
