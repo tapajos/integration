@@ -53,13 +53,10 @@ namespace :integration do
     end
   end
 
-  task :start => ["git:status_check", "log:clear", "tmp:clear", "backup:local", "git:pull"]
-  task :finish => ["git:push"]
-
-  desc 'Set coverage variable to coverage=on to run simplecov on integration'
-  task :turn_on_simplecov do
+  task :start => ["git:status_check", "log:clear", "tmp:clear", "backup:local", "git:pull"] do
     ENV['coverage'] = 'on'
   end
+  task :finish => ["git:push"]
 
   desc 'Check code coverage'
   task :coverage_verify do
@@ -84,7 +81,6 @@ You'll probably want to add coverage/ to your .gitignore file.
 A sample content look like this:
 
 INTEGRATION_TASKS = %w(
-  turn_on_simplecov
   integration:start
   integration:bundle_install
   db:migrate

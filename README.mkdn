@@ -24,16 +24,16 @@ After installing the plugin is ready to be used and you will need to execute onl
 
 ## [ProTip] Using Simplecov
 
-Using a simplecov on your test suite will make your tests to run slower. We resolved it using an enviroment variable called "coverage" on spec_helper.rb to turn on/off the simplecov. See below
+Using simplecov on your test suite will make your tests to run slower. You can fix it using an environment variable called "coverage" on test_helper.rb/spec_helper.rb to turn on/off the simplecov. See below:
 
-spec_helper.rb
+spec_helper.rb or test_helper.rb
 
     if ENV['coverage'] == 'on'
       require 'simplecov'
       SimpleCov.start 'rails'
     end
 
-To turn on simplecov, you just need to put :turn_on_simplecov task on your integration.rake
+The "coverage" variable is set to "on" by the integration process. When running tests/specs while you're developing, simplecov doesn't run, unless you set "coverage" environment variable by hand.
 
 ## Integration Steps
 
@@ -67,10 +67,6 @@ The integration process is composed of several steps that are explained ahead. I
 * Your test/spec suite  
 
 	Set the rake task your test/spec suite needs to run. Use a command that generate the coverage files.
-
-* turn_on_simplecov
-
-	Turn on simplecov on integration.
 
 * coverage_verify  
 
