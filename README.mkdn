@@ -22,6 +22,19 @@ After installing the plugin is ready to be used and you will need to execute onl
 * [Hpricot][h] to verify coverage
 * [Rcov][rc](Ruby 1.8) or [Simplecov][sc](Ruby 1.9) (optional)
 
+## [ProTip] Using Simplecov
+
+Using a simplecov on your test suite will make your tests to run slower. We resolved it using an enviroment variable called "coverage" on spec_helper.rb to turn on/off the simplecov. See below
+
+spec_helper.rb
+
+    if ENV['coverage'] == 'on'
+      require 'simplecov'
+      SimpleCov.start 'rails'
+    end
+
+To turn on simplecov, you just need to put :turn_on_simplecov task on your integration.rake
+
 ## Integration Steps
 
 The integration process is composed of several steps that are explained ahead. It's possible to skip one or more steps and add other steps of your own. This will be demonstrated shortly. The complete set of steps are:
@@ -55,6 +68,10 @@ The integration process is composed of several steps that are explained ahead. I
 
 	Set the rake task your test/spec suite needs to run. Use a command that generate the coverage files.
 
+* turn_on_simplecov
+
+	Turn on simplecov on integration.
+
 * coverage_verify  
 
 	Check if tests/specs cover 100% of the application code.
@@ -72,10 +89,10 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 	So you don't have tests, nor specs but you still want to use the integration. You might get away with this customized lib/tasks/integration.rake:
 	
 	    INTEGRATION_TASKS = %w(
-        integration:start
-        db:migrate
-        integration:finish
-      )
+	        integration:start
+          db:migrate
+          integration:finish
+          )
 
 	The fact that you can get away with this doesn't mean you should. Don't you think it's already time to grow up and become more professional about software development? I know you believe you have a great excuse to avoid writing those tests or specs. Still it's just an excuse. Write tests or write specs and make a better world!
 
@@ -83,13 +100,13 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 
  	You haven't jumped on the [BDD][] bandwagon yet. Instead, you write tests, which is good, but they don't cover all of your code yet, which is bad. We believe you will [improve it][ii] and make sure your tests cover 100% of your code. In the meantime you might need to skip coverage checkings. Oh, you also don't use [Selenium][sor]. Shame on you! Try this:
 
-		INTEGRATION_TASKS = %w(
-      integration:start
-      db:migrate
-      test
-      integration:finish
-    )
-								
+	    INTEGRATION_TASKS = %w(
+	        integration:start
+          db:migrate
+          test
+          integration:finish
+          )
+
 	As a matter of fact, since this case might be very common, **we decided to create a lib/tasks/integration.rake for you once the plugin has been installed. It has this very configuration and you can use it as a starting point to customize your integration process**.
 
 * Spec infected programmer
@@ -97,12 +114,12 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 	So you used to [TDD][] all around but then someone told you that this is for gramma. The new wave has a name on it: [BDD][]. So, of course, you now have specs covering 100% of your code and doesn't have any more tests. Great! Just do it:
 	
 	    INTEGRATION_TASKS = %w(
-        integration:start
-        db:migrate
-        spec
-        integration:coverage_verify
-        integration:finish
-      )
+          integration:start
+          db:migrate
+          spec
+          integration:coverage_verify
+          integration:finish
+          )
 
 ## Version
 
