@@ -60,7 +60,11 @@ namespace :integration do
 
   desc 'Check code coverage'
   task :coverage_verify do
+    if RUBY_VERSION =~ /1.8/
     sh "ruby #{File.expand_path(File.dirname(__FILE__) + '/../../test/coverage_test.rb')}"
+    else
+      raise "You should update your spec/spec_helper.rb and add:\nIntegration.with_full_coverage!\nThis will require SimpleCov and start it for you. You can safely remove this task afterwards."
+    end
   end
 
   desc 'Run bundle install'
