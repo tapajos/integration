@@ -8,5 +8,6 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/mergulhao/integration"
   s.files       = Dir["{lib/**/*.rb, lib/**/*.rake, test/**/*.rb,README.mkdn,Rakefile,MIT-LICENSE,*.gemspec}"]
   s.required_rubygems_version = "1.8.0"
-  s.add_runtime_dependency('hpricot')
+  s.add_runtime_dependency('hpricot') if RUBY_VERSION =~ /1.8/
+  s.add_runtime_dependency('simplecov') if RUBY_VERSION =~ /1.9/
 end
