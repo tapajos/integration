@@ -2,7 +2,7 @@
 
 ## What
 
-Integration is a [Ruby on Rails][ror] plugin that provides a set of tasks to automate all steps of a [synchronous continuous integration][sci] process, that is, [continuous integration][ci] without a server such as [CruiseControl][cc]. Why? Because that's the way we like it!
+Integration is a [Ruby][ror] gem that provides a set of tasks to automate all steps of a [synchronous continuous integration][sci] process, that is, [continuous integration][ci] without a server such as [CruiseControl][cc]. Why? Because that's the way we like it!
 
 ## Installing
 
