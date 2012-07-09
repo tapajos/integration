@@ -9,7 +9,7 @@ Integration is a [Ruby][ror] gem that provides a set of tasks to automate all st
 Add it to your Gemfile:
 
     group :test, :development do
-      gem 'integration', :git => 'git://github.com/mergulhao/integration.git'
+      gem 'integration', :git => 'git://github.com/tapajos/integration.git'
     end
 
 After installing the plugin is ready to be used and you will need to execute only one task in order to integrate your code safely:
