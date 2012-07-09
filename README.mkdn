@@ -39,51 +39,51 @@ The "coverage" variable is set to "on" by the integration process. When running 
 
 The integration process is composed of several steps that are explained ahead. It's possible to skip one or more steps and add other steps of your own. This will be demonstrated shortly. The complete set of steps are:
 
-1. task git:status_check  
+1. task git:status_check
 
 	Check if all local files are under control of your scm.
 
-* task log:clear  
+* task log:clear
 
 	Remove log files.
-	
-* task tmp:clear  
+
+* task tmp:clear
 
 	Remove temporary files.
 
-* task backup:local  
+* task backup:local
 
 	Backup files locally. This is done before scm update to create a recovery point if you have problems during scm update. If a file merge creates undesirable effects on the software, you can recover from the backup file.
 	Backup file names have a timestamp. By default, the last 30 backups are kept. You may change this number as you'll see shortly. This task won't work on Windows because it uses [tar][]. So, if you're using Windows you'll have to write your own version of this task or just stop using Windows. We highly recommend the later.
 
-* task git:pull  
+* task git:pull
 
 	Update local files from your remote scm repository.
 
 * task db:migrate
 
 	Execute any new database migration created by other team members since the last integration.
-	
-* Your test/spec suite  
+
+* Your test/spec suite
 
 	Set the rake task your test/spec suite needs to run. Use a command that generate the coverage files.
 
-* coverage_verify  
+* coverage_verify
 
 	Check if tests/specs cover 100% of the application code.
 
 * git:push
 
 	Push your changes. If any of the previous tasks break, because one test failed, for instance, the script won't push. Actually this task runs only if every checking done before work well.
-	
-Using this almost paranoid sequence of steps it will be hard to check in bad code in your repository, which is good, very good. The idea is that you should treat your repository as a sacred place, where only good code should ever enter.  	
+
+Using this almost paranoid sequence of steps it will be hard to check in bad code in your repository, which is good, very good. The idea is that you should treat your repository as a sacred place, where only good code should ever enter.
 
 ### More examples
 
 * Reckless programmer
 
 	So you don't have tests, nor specs but you still want to use the integration. You might get away with this customized lib/tasks/integration.rake:
-	
+
 	    INTEGRATION_TASKS = %w(
 	        integration:start
           db:migrate
@@ -94,7 +94,7 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 
 * Test conscious programmer
 
- 	You haven't jumped on the [BDD][] bandwagon yet. Instead, you write tests, which is good, but they don't cover all of your code yet, which is bad. We believe you will [improve it][ii] and make sure your tests cover 100% of your code. In the meantime you might need to skip coverage checkings. Oh, you also don't use [Selenium][sor]. Shame on you! Try this:
+	You haven't jumped on the [BDD][] bandwagon yet. Instead, you write tests, which is good, but they don't cover all of your code yet, which is bad. We believe you will [improve it][ii] and make sure your tests cover 100% of your code. In the meantime you might need to skip coverage checkings. Oh, you also don't use [Selenium][sor]. Shame on you! Try this:
 
 	    INTEGRATION_TASKS = %w(
 	        integration:start
@@ -108,7 +108,7 @@ Using this almost paranoid sequence of steps it will be hard to check in bad cod
 * Spec infected programmer
 
 	So you used to [TDD][] all around but then someone told you that this is for gramma. The new wave has a name on it: [BDD][]. So, of course, you now have specs covering 100% of your code and doesn't have any more tests. Great! Just do it:
-	
+
 	    INTEGRATION_TASKS = %w(
           integration:start
           db:migrate
@@ -140,8 +140,8 @@ Comments are welcome.
 
 ## Authors
 
-[Marcos Tapajós][mt]  
-[Sylvestre Mergulhão][sm]  
+[Marcos Tapajós][mt]
+[Sylvestre Mergulhão][sm]
 [Vinícius Teles][vt]
 
 [mt]:		https://github.com/tapajos
