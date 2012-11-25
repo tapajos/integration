@@ -54,7 +54,7 @@ namespace :integration do
   end
 
   task :start => ["git:status_check", "log:clear", "tmp:clear", "backup:local", "git:pull"] do
-    ENV['coverage'] = 'on'
+    ENV['COVERAGE'] = 'on'
   end
   task :finish => ["git:push"]
 
