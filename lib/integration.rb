@@ -7,6 +7,8 @@ class Integration
         if SimpleCov.result.covered_percent < 100
           SimpleCov.result.format!
           exit(1)
+        else
+          puts  "Congrats! Full code coverage!"
         end
       end
       SimpleCov.start
